@@ -64,17 +64,28 @@ class SwipableCardWidget extends StatelessWidget {
 class ArrangedCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: <Widget>[
-        Container(width: 180, height: 180, color: Colors.purple),
-        Container(width: 180, height: 180, color: Colors.purple),
-        Container(width: 180, height: 180, color: Colors.purple),
-        Container(width: 180, height: 180, color: Colors.purple),
-        Container(width: 180, height: 180, color: Colors.purple),
-        Container(width: 180, height: 180, color: Colors.purple),
-      ],
+    return (Container(
+      height: 650, // todo:いい感じに収まるようにするにはどうしたらええんやろう
+      child: SingleChildScrollView(
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: <Widget>[
+            Container(width: 180, height: 180, color: Colors.yellow),
+            Container(width: 180, height: 180, color: Colors.yellow),
+            Container(width: 180, height: 180, color: Colors.green),
+            Container(width: 180, height: 180, color: Colors.green),
+            Container(width: 180, height: 180, color: Colors.yellow),
+            Container(width: 180, height: 180, color: Colors.yellow),
+            Container(width: 180, height: 180, color: Colors.green),
+            Container(width: 180, height: 180, color: Colors.green),
+            Container(width: 180, height: 180, color: Colors.yellow),
+            Container(width: 180, height: 180, color: Colors.yellow),
+            Container(width: 180, height: 180, color: Colors.green),
+            Container(width: 180, height: 180, color: Colors.green),
+          ],
+        ),
+      ),
     ));
   }
 }
