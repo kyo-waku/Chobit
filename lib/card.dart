@@ -32,6 +32,16 @@ class _CardWidgetState extends State<CardWidget> {
               onPressed: _onCardViewModeTapped,
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              '31th August 2020',
+              textAlign: TextAlign.center,
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .apply(fontSizeFactor: 1.5, fontWeightDelta: 2),
+            ),
+          ),
           _cardViewMode == 0 ? SwipableCardWidget() : ArrangedCardWidget()
         ],
       ),
