@@ -7,7 +7,7 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
-  int _cardViewMode = 0;
+  int _cardViewMode = 0; // 0 : Swipable, 1: Arranged
   void _onCardViewModeTapped() {
     setState(() {
       if (_cardViewMode == 0) {
@@ -27,19 +27,12 @@ class _CardWidgetState extends State<CardWidget> {
             alignment: Alignment.topRight,
             child: IconButton(
               icon: _cardViewMode == 0
-                  ? Icon(Icons.style)
-                  : Icon(Icons.view_module),
+                  ? Icon(Icons.view_module)
+                  : Icon(Icons.style),
               onPressed: _onCardViewModeTapped,
             ),
           ),
-          _cardViewMode == 0
-              ? SwipableCardWidget()
-              : Container(
-                  width: 300,
-                  height: 600,
-                  color: Colors.yellow,
-                  child: Text('Swipable Card UI'),
-                ),
+          _cardViewMode == 0 ? SwipableCardWidget() : ArrangedCardWidget()
         ],
       ),
     ));
@@ -47,6 +40,18 @@ class _CardWidgetState extends State<CardWidget> {
 }
 
 class SwipableCardWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (Container(
+      width: 300,
+      height: 600,
+      color: Colors.yellow,
+      child: Text('Swipable Card UI'),
+    ));
+  }
+}
+
+class ArrangedCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (Wrap(
