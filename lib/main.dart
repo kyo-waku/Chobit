@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './settings.dart';
 import './chart.dart';
+import './card.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,18 +40,16 @@ class _MyHomePageState extends State<MyHomePage> {
 // ページ切り替え
   static List<Widget> _bodyWidgets = [
     ChartWidget(),
-    SafeArea(
-      child: Container(
-        color: Colors.blue,
-      ),
-    ),
+    CardWidget(),
     SettingsWidget(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _bodyWidgets[_selectedIndex],
+      body: SafeArea(
+        child: _bodyWidgets[_selectedIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: const <BottomNavigationBarItem>[
