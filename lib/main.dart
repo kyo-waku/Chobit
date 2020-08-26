@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Chobit',
       theme: ThemeData(
         canvasColor: Color(Colors.blueGrey[50].value),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1; // initialize: Home UI
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -47,15 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: _bodyWidgets[_selectedIndex],
-      ),
+      body: _bodyWidgets[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.insert_chart),
-            title: Text('Account'),
+            title: Text('Chart'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
