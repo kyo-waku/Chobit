@@ -49,14 +49,42 @@ class _CardWidgetState extends State<CardWidget> {
   }
 }
 
-class SwipableCardWidget extends StatelessWidget {
+class SwipableCardWidget extends StatefulWidget {
+  SwipableCardWidget({Key key}) : super(key: key);
+  @override
+  _SwipableCardState createState() => _SwipableCardState();
+}
+
+class _SwipableCardState extends State<SwipableCardWidget> {
+  int _index = 0;
+
   @override
   Widget build(BuildContext context) {
-    return (Container(
-      width: 300,
-      height: 600,
-      color: Colors.yellow,
-      child: Text('Swipable Card UI'),
+    return (Center(
+      child: SizedBox(
+        height: 600, // card height
+        child: PageView.builder(
+          itemCount: 10,
+          controller: PageController(viewportFraction: 0.8),
+          onPageChanged: (int index) => setState(() => _index = index),
+          itemBuilder: (_, i) {
+            return Transform.scale(
+              scale: i == _index ? 0.88 : 0.9,
+              child: Card(
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                  child: Text(
+                    "Card ${i + 1}",
+                    style: TextStyle(fontSize: 32),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     ));
   }
 }
