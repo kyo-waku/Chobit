@@ -70,20 +70,75 @@ class _SwipableCardState extends State<SwipableCardWidget> {
           itemBuilder: (_, i) {
             return Transform.scale(
               scale: i == _index ? 0.88 : 0.9,
-              child: Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                  child: Text(
-                    "Card ${i + 1}",
-                    style: TextStyle(fontSize: 32),
-                  ),
-                ),
-              ),
+              child: HalfRoundedImageCard(),
+              // Card(
+              //   elevation: 6,
+              //   shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(20)),
+              //   child: Center(
+              //     child: Text(
+              //       "Card ${i + 1}",
+              //       style: TextStyle(fontSize: 32),
+              //     ),
+              //   ),
+              // ),
             );
           },
         ),
+      ),
+    ));
+  }
+}
+
+class HalfRoundedImageCard extends StatefulWidget {
+  HalfRoundedImageCard({Key key}) : super(key: key);
+  @override
+  _HalfRoundedImageCardState createState() => _HalfRoundedImageCardState();
+}
+
+class _HalfRoundedImageCardState extends State<HalfRoundedImageCard> {
+  @override
+  Widget build(BuildContext context) {
+    return (Card(
+      color: Colors.blue[200],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Column(
+        children: <Widget>[
+          Container(
+            constraints: BoxConstraints.expand(height: 300),
+            child: ClipRRect(
+              borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(20),
+                topRight: const Radius.circular(20),
+                bottomLeft: const Radius.circular(80),
+              ),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Image(
+                  image: NetworkImage(
+                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Habit Title',
+                    style: TextStyle(fontSize: 32),
+                  ),
+                  Text('Last 3 Successes'),
+                  Text('7days ago'),
+                  Text('4days ago'),
+                  Text('2days ago'),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     ));
   }
