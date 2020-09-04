@@ -92,25 +92,7 @@ class _HalfRoundedImageCardState extends State<HalfRoundedImageCard> {
       color: Colors.blue[200],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Stack(
-        //mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //     Container(
-          //       constraints: BoxConstraints.expand(height: 300),
-          //       child: ClipRRect(
-          //         borderRadius: new BorderRadius.only(
-          //           topLeft: const Radius.circular(20),
-          //           topRight: const Radius.circular(20),
-          //           bottomLeft: const Radius.circular(80),
-          //         ),
-          //         child: FittedBox(
-          //           fit: BoxFit.fitWidth,
-          //           child: Image(
-          //             image: NetworkImage(
-          //                 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
           Opacity(
             opacity: 0.5,
             child: Icon(
