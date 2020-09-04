@@ -42,40 +42,86 @@ class _CardWidgetState extends State<CardWidget> {
                   .apply(fontSizeFactor: 1.5, fontWeightDelta: 2),
             ),
           ),
-          _cardViewMode == 0 ? SwipableCardWidget() : ArrangedCardWidget()
+          _cardViewMode == 0
+              ? GestureWrappedSwipableCardWidget()
+              : ArrangedCardWidget()
         ],
       ),
     ));
   }
 }
 
+class GestureWrappedSwipableCardWidget extends StatefulWidget {
+  GestureWrappedSwipableCardWidget({Key key}) : super(key: key);
+  @override
+  _GestureWrappedSwipableCardWidgetState createState() =>
+      _GestureWrappedSwipableCardWidgetState();
+}
+
+class _GestureWrappedSwipableCardWidgetState
+    extends State<GestureWrappedSwipableCardWidget> {
+  // for test
+  bool _trash = false;
+  @override
+  Widget build(BuildContext context) {
+    return (GestureDetector(
+      onPanUpdate: (DragUpdateDetails dud) {
+        if (dud.delta.dy > 30) {
+          setState(() {
+            _trash = true;
+          });
+        }
+        if (dud.delta.dy < -30) {
+          setState(() {
+            _trash = false;
+          });
+        }
+      },
+      child: SwipableCardWidget(trash: _trash),
+    ));
+  }
+}
+
 class SwipableCardWidget extends StatefulWidget {
-  SwipableCardWidget({Key key}) : super(key: key);
+  final bool trash;
+  SwipableCardWidget({Key key, @required this.trash}) : super(key: key);
   @override
   _SwipableCardState createState() => _SwipableCardState();
 }
 
 class _SwipableCardState extends State<SwipableCardWidget> {
   int _index = 0;
-
   @override
   Widget build(BuildContext context) {
     return (Center(
-      child: SizedBox(
-        height: 600, // card height
-        child: PageView.builder(
-          itemCount: 10,
-          controller: PageController(viewportFraction: 0.8),
-          onPageChanged: (int index) => setState(() => _index = index),
-          itemBuilder: (_, i) {
-            return Transform.scale(
-              scale: i == _index ? 0.88 : 0.9,
-              child: CardWithIconBackground(),
-            );
-          },
+        child: Column(
+      children: <Widget>[
+        widget.trash
+            ? IconButton(
+                icon: Icon(
+                  Icons.delete_forever,
+                  size: 36.0,
+                ),
+                tooltip: 'Delete',
+                onPressed: () {},
+              )
+            : SizedBox(height: 0),
+        SizedBox(
+          height: 600, // card height
+          child: PageView.builder(
+            itemCount: 10,
+            controller: PageController(viewportFraction: 0.8),
+            onPageChanged: (int index) => setState(() => _index = index),
+            itemBuilder: (_, i) {
+              return (Transform.scale(
+                scale: i == _index ? 0.88 : 0.9,
+                child: CardWithIconBackground(),
+              ));
+            },
+          ),
         ),
-      ),
-    ));
+      ],
+    )));
   }
 }
 
