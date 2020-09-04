@@ -71,17 +71,6 @@ class _SwipableCardState extends State<SwipableCardWidget> {
             return Transform.scale(
               scale: i == _index ? 0.88 : 0.9,
               child: HalfRoundedImageCard(),
-              // Card(
-              //   elevation: 6,
-              //   shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(20)),
-              //   child: Center(
-              //     child: Text(
-              //       "Card ${i + 1}",
-              //       style: TextStyle(fontSize: 32),
-              //     ),
-              //   ),
-              // ),
             );
           },
         ),
@@ -102,35 +91,49 @@ class _HalfRoundedImageCardState extends State<HalfRoundedImageCard> {
     return (Card(
       color: Colors.blue[200],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Column(
+      child: Stack(
+        //mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-            constraints: BoxConstraints.expand(height: 300),
-            child: ClipRRect(
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(20),
-                topRight: const Radius.circular(20),
-                bottomLeft: const Radius.circular(80),
-              ),
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Image(
-                  image: NetworkImage(
-                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-                ),
-              ),
+          //     Container(
+          //       constraints: BoxConstraints.expand(height: 300),
+          //       child: ClipRRect(
+          //         borderRadius: new BorderRadius.only(
+          //           topLeft: const Radius.circular(20),
+          //           topRight: const Radius.circular(20),
+          //           bottomLeft: const Radius.circular(80),
+          //         ),
+          //         child: FittedBox(
+          //           fit: BoxFit.fitWidth,
+          //           child: Image(
+          //             image: NetworkImage(
+          //                 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          Opacity(
+            opacity: 0.5,
+            child: Icon(
+              Icons.directions_run,
+              color: Colors.blueGrey,
+              size: 360.0,
             ),
           ),
+          SizedBox(height: 50),
           Center(
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 150),
                   Text(
-                    'Habit Title',
-                    style: TextStyle(fontSize: 32),
+                    'Running',
+                    style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
                   ),
+                  SizedBox(height: 50),
                   Text('Last 3 Successes'),
+                  SizedBox(height: 30),
                   Text('7days ago'),
                   Text('4days ago'),
                   Text('2days ago'),
