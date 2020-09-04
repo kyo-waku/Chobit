@@ -70,7 +70,7 @@ class _SwipableCardState extends State<SwipableCardWidget> {
           itemBuilder: (_, i) {
             return Transform.scale(
               scale: i == _index ? 0.88 : 0.9,
-              child: HalfRoundedImageCard(),
+              child: CardWithIconBackground(),
             );
           },
         ),
@@ -79,13 +79,13 @@ class _SwipableCardState extends State<SwipableCardWidget> {
   }
 }
 
-class HalfRoundedImageCard extends StatefulWidget {
-  HalfRoundedImageCard({Key key}) : super(key: key);
+class CardWithIconBackground extends StatefulWidget {
+  CardWithIconBackground({Key key}) : super(key: key);
   @override
-  _HalfRoundedImageCardState createState() => _HalfRoundedImageCardState();
+  _CardWithIconBackgroundState createState() => _CardWithIconBackgroundState();
 }
 
-class _HalfRoundedImageCardState extends State<HalfRoundedImageCard> {
+class _CardWithIconBackgroundState extends State<CardWithIconBackground> {
   @override
   Widget build(BuildContext context) {
     return (Card(
@@ -132,25 +132,82 @@ class _HalfRoundedImageCardState extends State<HalfRoundedImageCard> {
 class ArrangedCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double scrollViewHeight = size.height * 0.7;
     return (Container(
-      height: 650, // todo:いい感じに収まるようにするにはどうしたらええんやろう
+      height: scrollViewHeight, // todo:いい感じに収まるようにするにはどうしたらええんやろう
       child: SingleChildScrollView(
         child: Wrap(
           spacing: 10,
           runSpacing: 10,
           children: <Widget>[
-            Container(width: 180, height: 180, color: Colors.yellow),
-            Container(width: 180, height: 180, color: Colors.yellow),
-            Container(width: 180, height: 180, color: Colors.green),
-            Container(width: 180, height: 180, color: Colors.green),
-            Container(width: 180, height: 180, color: Colors.yellow),
-            Container(width: 180, height: 180, color: Colors.yellow),
-            Container(width: 180, height: 180, color: Colors.green),
-            Container(width: 180, height: 180, color: Colors.green),
-            Container(width: 180, height: 180, color: Colors.yellow),
-            Container(width: 180, height: 180, color: Colors.yellow),
-            Container(width: 180, height: 180, color: Colors.green),
-            Container(width: 180, height: 180, color: Colors.green),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+            SquareCardWithIconBackground(),
+          ],
+        ),
+      ),
+    ));
+  }
+}
+
+class SquareCardWithIconBackground extends StatefulWidget {
+  SquareCardWithIconBackground({Key key}) : super(key: key);
+  @override
+  _SquareCardWithIconBackgroundState createState() =>
+      _SquareCardWithIconBackgroundState();
+}
+
+class _SquareCardWithIconBackgroundState
+    extends State<SquareCardWithIconBackground> {
+  @override
+  Widget build(BuildContext context) {
+    double cardScale = 180;
+    return (SizedBox(
+      width: cardScale,
+      height: cardScale,
+      child: Card(
+        color: Colors.blue[200],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: Opacity(
+                opacity: 0.5,
+                child: Icon(
+                  Icons.directions_run,
+                  color: Colors.blueGrey,
+                  size: 100.0,
+                ),
+              ),
+            ),
+            SizedBox(height: 50),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Spacer(flex: 3),
+                    Text(
+                      'Running',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(flex: 1),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
