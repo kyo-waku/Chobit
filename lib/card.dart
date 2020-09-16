@@ -81,147 +81,8 @@ class _SwipableCardState extends State<SwipableCardWidget> {
         ),
       ),
     ));
-    // GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
-    // @override
-    // Widget build(BuildContext context) {
-    //   return (GestureDetector(
-    //     onTap: () {},
-    //     child: Center(
-    //       child: SizedBox(
-    //         height: 600, // card height
-    //         child: PageView.builder(
-    //           itemCount: 10,
-    //           controller: PageController(viewportFraction: 0.8),
-    //           onPageChanged: (int index) => setState(() => {
-    //                 _index = index,
-    //               }),
-    //           itemBuilder: (_, i) {
-    //             return (Transform.scale(
-    //               scale: i == _index ? 0.9 : 0.9,
-    //               child: FlipCard(
-    //                 direction: FlipDirection.HORIZONTAL,
-    //                 front: CardHistoryMode(),
-    //                 back: CardRecordMode(),
-    //               ),
-    //             ));
-    //           },
-    //         ),
-    //       ),
-    //     ),
-    //   ));
   }
 }
-
-// class CardRecordMode extends StatefulWidget {
-//   CardRecordMode({Key key}) : super(key: key);
-//   @override
-//   _CardRecordModeState createState() => _CardRecordModeState();
-// }
-
-// class _CardRecordModeState extends State<CardRecordMode> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return (Card(
-//       color: Colors.green[200],
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-//       child: Stack(
-//         children: <Widget>[
-//           Align(
-//             alignment: Alignment.topCenter,
-//             child: Opacity(
-//               opacity: 0.5,
-//               child: Icon(
-//                 Icons.directions_run,
-//                 color: Colors.blueGrey,
-//                 size: 200.0,
-//               ),
-//             ),
-//           ),
-//           Center(
-//             child: Padding(
-//               padding: EdgeInsets.all(16),
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                 children: <Widget>[
-//                   Spacer(flex: 2),
-//                   Text(
-//                     'Running',
-//                     style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
-//                   ),
-//                   Spacer(flex: 2),
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                     children: <Widget>[
-//                       Column(
-//                         children: <Widget>[
-//                           Icon(
-//                             Icons.brightness_low,
-//                             size: 50,
-//                             color: Colors.blueGrey,
-//                           ),
-//                           Text(
-//                             'Excellent',
-//                             style: TextStyle(fontSize: 15),
-//                           )
-//                         ],
-//                       ),
-//                       Column(
-//                         children: <Widget>[
-//                           Icon(
-//                             Icons.thumb_up,
-//                             size: 50,
-//                             color: Colors.blueGrey,
-//                           ),
-//                           Text(
-//                             'Nice',
-//                             style: TextStyle(fontSize: 15),
-//                           )
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                   Spacer(flex: 1),
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                     children: <Widget>[
-//                       Column(
-//                         children: <Widget>[
-//                           Icon(
-//                             Icons.copyright,
-//                             size: 50,
-//                             color: Colors.blueGrey,
-//                           ),
-//                           Text(
-//                             'Chobit',
-//                             style: TextStyle(fontSize: 15),
-//                           )
-//                         ],
-//                       ),
-//                       Column(
-//                         children: <Widget>[
-//                           Icon(
-//                             Icons.local_cafe,
-//                             size: 50,
-//                             color: Colors.blueAccent,
-//                           ),
-//                           Text(
-//                             'Break',
-//                             style: TextStyle(fontSize: 15),
-//                           )
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                   Spacer(flex: 2),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     ));
-//   }
-// }
 
 class CardHistoryMode extends StatefulWidget {
   CardHistoryMode({Key key}) : super(key: key);
@@ -282,13 +143,31 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
 Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => FullPageCard(),
+    // transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    //   return child;
+    // },
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return child;
+      var begin = Offset(0.0, 1.0);
+      var end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
     },
   );
 }
 
-class FullPageCard extends StatelessWidget {
+class FullPageCard extends StatefulWidget {
+  FullPageCard({Key key}) : super(key: key);
+  @override
+  _FullPageCardState createState() => _FullPageCardState();
+}
+
+class _FullPageCardState extends State<FullPageCard> {
+  int result = 4; // 1: Excellent, 2: Nice, 3: Chobit, 4: Break
   Widget build(BuildContext context) {
     return Scaffold(
       body:
@@ -346,8 +225,11 @@ class FullPageCard extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.brightness_low),
                               iconSize: 50,
-                              onPressed: () {},
-                              color: Colors.blueGrey,
+                              onPressed: () => setState(() => {
+                                    result = 1,
+                                  }),
+                              color:
+                                  result == 1 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Excellent',
@@ -360,8 +242,11 @@ class FullPageCard extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.thumb_up),
                               iconSize: 50,
-                              onPressed: () {},
-                              color: Colors.blueGrey,
+                              onPressed: () => setState(() => {
+                                    result = 2,
+                                  }),
+                              color:
+                                  result == 2 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Nice',
@@ -380,8 +265,11 @@ class FullPageCard extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.copyright),
                               iconSize: 50,
-                              onPressed: () {},
-                              color: Colors.blueGrey,
+                              onPressed: () => setState(() => {
+                                    result = 3,
+                                  }),
+                              color:
+                                  result == 3 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Chobit',
@@ -394,8 +282,11 @@ class FullPageCard extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.local_cafe),
                               iconSize: 50,
-                              onPressed: () {},
-                              color: Colors.blueGrey,
+                              onPressed: () => setState(() => {
+                                    result = 4,
+                                  }),
+                              color:
+                                  result == 4 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Break',
