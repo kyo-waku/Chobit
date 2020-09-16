@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import './settings.dart';
 import './chart.dart';
 import './card.dart';
@@ -47,7 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _bodyWidgets[_selectedIndex],
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: _bodyWidgets[_selectedIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: const <BottomNavigationBarItem>[
