@@ -1,4 +1,4 @@
-// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SettingsWidget extends StatelessWidget {
@@ -9,19 +9,20 @@ class SettingsWidget extends StatelessWidget {
         title: Text('Settings'),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        _menuItem("カード情報", Icon(Icons.settings), Icon(Icons.arrow_forward_ios)),
-        _menuItem("週の始まり", Icon(Icons.map), Icon(Icons.arrow_forward_ios)),
-        _menuItem("通知", Icon(Icons.room), Icon(Icons.arrow_forward_ios)),
-        _menuItem("ダークモード", Icon(Icons.local_shipping)),
-        _menuItem("ホーム画面のアイコン", Icon(Icons.airplanemode_active)),
-        _menuItem("フォント", Icon(Icons.airplanemode_active)),
-        _menuItem("言語", Icon(Icons.airplanemode_active)),
-        _menuItem("今後の予定", Icon(Icons.airplanemode_active)),
-        _menuItem("紹介", Icon(Icons.airplanemode_active)),
-        _menuItem("ご意見", Icon(Icons.airplanemode_active)),
-        _menuItem("寄付", Icon(Icons.airplanemode_active)),
-        _menuItem("メニュー5", Icon(Icons.airplanemode_active)),
-        _menuItem("メニュー5", Icon(Icons.airplanemode_active)),
+        _menuItem(
+            "カード情報", Icon(Icons.credit_card), Icon(Icons.arrow_forward_ios)),
+        _menuItem(
+            "週の始まり", Icon(Icons.calendar_today), Icon(Icons.arrow_forward_ios)),
+        _menuItem("通知", Icon(Icons.alarm), Icon(Icons.arrow_forward_ios)),
+        _menuItem("ダークモード", Icon(Icons.brightness_4)),
+        _menuItem("ホーム画面のアイコン", Icon(Icons.phone_iphone)),
+        _menuItem("フォントサイズ", Icon(Icons.format_size)),
+        _menuItem("言語", Icon(Icons.g_translate)),
+        _menuItem("今後の予定", Icon(Icons.watch)),
+        _menuItem("紹介", Icon(Icons.chat)),
+        _menuItem("ご意見", Icon(Icons.contact_mail)),
+        _menuItem("寄付", Icon(Icons.attach_money)),
+        _menuItem("ゴミ箱", Icon(Icons.delete)),
       ]),
     );
   }
