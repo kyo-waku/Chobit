@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flip_card/flip_card.dart';
+import './inheriteds.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({Key key}) : super(key: key);
@@ -39,7 +39,7 @@ class _CardWidgetState extends State<CardWidget> {
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              '31th August 2020',
+              '${MyInherited.of(context, listen: true).today}',
               textAlign: TextAlign.center,
               style: DefaultTextStyle.of(context)
                   .style
