@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './inheriteds.dart';
+import 'inheriteds.dart';
+import 'Defines.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({Key key}) : super(key: key);
@@ -39,7 +40,7 @@ class _CardWidgetState extends State<CardWidget> {
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              '${MyInherited.of(context, listen: true).today}',
+              '${dateTimeFormatter(new DateTime.now())}',
               textAlign: TextAlign.center,
               style: DefaultTextStyle.of(context)
                   .style
@@ -63,11 +64,12 @@ class _SwipableCardState extends State<SwipableCardWidget> {
   int _index = 0;
   @override
   Widget build(BuildContext context) {
+    var numOfHabit = MyInherited.of(context, listen: true).numOfHabit;
     return (Center(
       child: SizedBox(
         height: 600, // card height
         child: PageView.builder(
-          itemCount: 10,
+          itemCount: numOfHabit,
           controller: PageController(viewportFraction: 0.8),
           onPageChanged: (int index) => setState(() => {
                 _index = index,
@@ -75,7 +77,7 @@ class _SwipableCardState extends State<SwipableCardWidget> {
           itemBuilder: (_, i) {
             return (Transform.scale(
               scale: i == _index ? 0.9 : 0.9,
-              child: CardHistoryMode(),
+              child: CardHistoryMode(index: i % 2),
             ));
           },
         ),
@@ -85,7 +87,8 @@ class _SwipableCardState extends State<SwipableCardWidget> {
 }
 
 class CardHistoryMode extends StatefulWidget {
-  CardHistoryMode({Key key}) : super(key: key);
+  CardHistoryMode({Key key, this.index}) : super(key: key);
+  final int index;
   @override
   _CardHistoryModeState createState() => _CardHistoryModeState();
 }
@@ -93,22 +96,26 @@ class CardHistoryMode extends StatefulWidget {
 class _CardHistoryModeState extends State<CardHistoryMode> {
   @override
   Widget build(BuildContext context) {
+    var tempHabit = MyInherited.of(context, listen: true).habit[widget.index];
     return (GestureDetector(
         onTap: () {
-          Navigator.of(context).push(_createRoute());
+          Navigator.of(context).push(_createRoute(context, widget.index));
         },
         child: Card(
-          color: Colors.blue[200],
+          color: tempHabit.color, //Colors.blue[200],
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Stack(
             children: <Widget>[
-              Opacity(
-                opacity: 0.5,
-                child: Icon(
-                  Icons.directions_run,
-                  color: Colors.blueGrey,
-                  size: 360.0,
+              Align(
+                alignment: Alignment.topCenter,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: Icon(
+                    tempHabit.icon, //Icons.directions_run,
+                    color: Colors.blueGrey,
+                    size: 240.0,
+                  ),
                 ),
               ),
               SizedBox(height: 50),
@@ -120,7 +127,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                     children: <Widget>[
                       SizedBox(height: 150),
                       Text(
-                        'Running',
+                        '${tempHabit.title}',
                         style: TextStyle(
                             fontSize: 42, fontWeight: FontWeight.bold),
                       ),
@@ -140,9 +147,10 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
   }
 }
 
-Route _createRoute() {
+Route _createRoute(BuildContext context, int index) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => FullPageCard(),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        FullPageCard(index: index),
     // transitionsBuilder: (context, animation, secondaryAnimation, child) {
     //   return child;
     // },
@@ -161,7 +169,8 @@ Route _createRoute() {
 }
 
 class FullPageCard extends StatefulWidget {
-  FullPageCard({Key key}) : super(key: key);
+  FullPageCard({Key key, this.index}) : super(key: key);
+  final int index;
   @override
   _FullPageCardState createState() => _FullPageCardState();
 }
@@ -169,6 +178,7 @@ class FullPageCard extends StatefulWidget {
 class _FullPageCardState extends State<FullPageCard> {
   int result = 4; // 1: Excellent, 2: Nice, 3: Chobit, 4: Break
   Widget build(BuildContext context) {
+    Habit tempHabit = MyInherited.of(context, listen: true).habit[widget.index];
     return Scaffold(
       body:
           // ページビューは一旦停止中
@@ -178,7 +188,7 @@ class _FullPageCardState extends State<FullPageCard> {
           // itemBuilder: (_, i) {
           //  return (Container(
           Container(
-        color: Colors.blue[200],
+        color: tempHabit.color,
         child: Column(
           children: <Widget>[
             Container(
@@ -196,7 +206,7 @@ class _FullPageCardState extends State<FullPageCard> {
                   Opacity(
                     opacity: 0.5,
                     child: Icon(
-                      Icons.directions_run,
+                      tempHabit.icon,
                       color: Colors.blueGrey,
                       size: 120.0,
                     ),
@@ -212,7 +222,7 @@ class _FullPageCardState extends State<FullPageCard> {
                   children: <Widget>[
                     SizedBox(height: 20),
                     Text(
-                      'Running',
+                      '${tempHabit.title}',
                       style:
                           TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
                     ),
@@ -318,6 +328,7 @@ class _FullPageCardState extends State<FullPageCard> {
 class ArrangedCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var numOfHabit = MyInherited.of(context, listen: true).numOfHabit;
     Size size = MediaQuery.of(context).size;
     double scrollViewHeight = size.height * 0.7;
     return (Container(
@@ -327,18 +338,7 @@ class ArrangedCardWidget extends StatelessWidget {
           spacing: 10,
           runSpacing: 10,
           children: <Widget>[
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
-            SquareCard(),
+            for (var i = 0; i < numOfHabit; i++) SquareCard(index: (i % 2))
           ],
         ),
       ),
@@ -347,7 +347,8 @@ class ArrangedCardWidget extends StatelessWidget {
 }
 
 class SquareCard extends StatefulWidget {
-  SquareCard({Key key}) : super(key: key);
+  SquareCard({Key key, this.index}) : super(key: key);
+  final int index;
   @override
   _SquareCard createState() => _SquareCard();
 }
@@ -355,16 +356,17 @@ class SquareCard extends StatefulWidget {
 class _SquareCard extends State<SquareCard> {
   @override
   Widget build(BuildContext context) {
+    var tempHabit = MyInherited.of(context, listen: true).habit[widget.index];
     double cardScale = 180;
     return (GestureDetector(
       onTap: () {
-        Navigator.of(context).push(_createRoute());
+        Navigator.of(context).push(_createRoute(context, widget.index));
       },
       child: SizedBox(
         width: cardScale,
         height: cardScale,
         child: Card(
-          color: Colors.blue[200],
+          color: tempHabit.color,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Stack(
@@ -373,7 +375,7 @@ class _SquareCard extends State<SquareCard> {
                 child: Opacity(
                   opacity: 0.5,
                   child: Icon(
-                    Icons.directions_run,
+                    tempHabit.icon,
                     color: Colors.blueGrey,
                     size: 100.0,
                   ),
@@ -388,7 +390,7 @@ class _SquareCard extends State<SquareCard> {
                     children: <Widget>[
                       Spacer(flex: 3),
                       Text(
-                        'Running',
+                        '${tempHabit.title}',
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),

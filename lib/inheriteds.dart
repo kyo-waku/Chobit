@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Defines.dart';
 
 // Inherited
 class MyInherited extends StatefulWidget {
@@ -21,6 +22,7 @@ class MyInherited extends StatefulWidget {
   }
 }
 
+// 状態の定義はここで管理
 class MyInheritedState extends State<MyInherited> {
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,15 @@ class MyInheritedState extends State<MyInherited> {
     );
   }
 
-  String get today {
-    var date = new DateTime.now();
-    return '${date.year} / ${date.month} / ${date.day}';
-  }
+  List<Habit> habit = makeInit();
+  int numOfHabit = 10; // テスト用にとりあえず10個にしている
+}
+
+List<Habit> makeInit() {
+  List<Habit> hb = new List<Habit>();
+  hb.add(initialHabit);
+  hb.add(initialHabit2);
+  return hb;
 }
 
 class _Inherited extends InheritedWidget {

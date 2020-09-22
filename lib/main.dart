@@ -13,14 +13,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chobit',
-      theme: ThemeData(
-        canvasColor: Color(Colors.blueGrey[50].value),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MyInherited(
+      child: MaterialApp(
+        title: 'Chobit',
+        theme: ThemeData(
+          canvasColor: Color(Colors.blueGrey[50].value),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
     );
   }
 }
@@ -50,33 +52,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MyInherited(
-      child: Scaffold(
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: _bodyWidgets[_selectedIndex],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 0,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.insert_chart),
-              title: Text('Chart'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              title: Text('Settings'),
-            ),
-          ],
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
+    return Scaffold(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: _bodyWidgets[_selectedIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.insert_chart),
+            title: Text('Chart'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+        ],
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
