@@ -31,9 +31,7 @@ class _CardWidgetState extends State<CardWidget> {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: _cardViewMode == 0
-                  ? Icon(Icons.view_module)
-                  : Icon(Icons.style),
+              icon: _cardViewMode == 0 ? Icon(Icons.view_module) : Icon(Icons.style),
               onPressed: _onCardViewModeTapped,
             ),
           ),
@@ -42,9 +40,7 @@ class _CardWidgetState extends State<CardWidget> {
             child: Text(
               '${dateTimeFormatter(new DateTime.now())}',
               textAlign: TextAlign.center,
-              style: DefaultTextStyle.of(context)
-                  .style
-                  .apply(fontSizeFactor: 1.5, fontWeightDelta: 2),
+              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5, fontWeightDelta: 2),
             ),
           ),
           _currentCardView,
@@ -71,7 +67,7 @@ class _SwipableCardState extends State<SwipableCardWidget> {
       child: SizedBox(
         height: scrollViewHeight, // card height
         child: PageView.builder(
-          itemCount: numOfHabit,
+          itemCount: numOfHabit + 1, // +1 is for adding page
           controller: PageController(viewportFraction: 0.8),
           onPageChanged: (int index) => setState(() => {
                 _index = index,
@@ -79,11 +75,233 @@ class _SwipableCardState extends State<SwipableCardWidget> {
           itemBuilder: (_, i) {
             return (Transform.scale(
               scale: i == _index ? 0.9 : 0.9,
-              child: CardHistoryMode(index: i),
+              child: (i == numOfHabit) ? AddHabitRect() : CardHistoryMode(index: i),
             ));
           },
         ),
       ),
+    ));
+  }
+}
+
+class AddHabitRect extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (Card(
+      color: Colors.blueGrey[100],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Center(
+        child: IconButton(
+          icon: Icon(Icons.add_circle_outline),
+          iconSize: 100,
+          color: Colors.blueGrey,
+          onPressed: () {
+            Navigator.of(context).push(_createNewHabitRoute(context));
+          },
+        ),
+      ),
+    ));
+  }
+}
+
+class AddHabitSqure extends StatelessWidget {
+  final double cardScale = 180;
+  @override
+  Widget build(BuildContext context) {
+    return (SizedBox(
+      width: cardScale,
+      height: cardScale,
+      child: Card(
+        color: Colors.blueGrey[100],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Center(
+          child: IconButton(
+            icon: Icon(Icons.add_circle_outline),
+            iconSize: 60,
+            color: Colors.blueGrey,
+            onPressed: () {
+              Navigator.of(context).push(_createNewHabitRoute(context));
+            },
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+Route _createNewHabitRoute(BuildContext context) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => NewHabitPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return child;
+    },
+  );
+}
+
+class NewHabitPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (Scaffold(
+      body: Container(
+        color: Colors.blueGrey[200],
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 250,
+              decoration: new BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Spacer(flex: 2),
+                  Opacity(
+                    opacity: 0.5,
+                    child: Icon(
+                      Icons.help_outline,
+                      color: Colors.blueGrey,
+                      size: 50.0,
+                    ),
+                  ),
+                  Spacer(flex: 1),
+                ],
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  decoration: const InputDecoration(
+                    hintText: 'Habit name',
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter your new habit name';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            Spacer(flex: 1),
+            Container(
+              height: 100,
+              child: IconSelector(),
+            ),
+            Spacer(flex: 1),
+            Container(
+              height: 100,
+              child: ColorSelector(),
+            ),
+            Spacer(flex: 2),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.check),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+            Spacer(flex: 1)
+          ],
+        ),
+      ),
+    ));
+  }
+}
+
+class IconSelector extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (ListView(
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        // @TODO: あとでMapで書くように変更するよ
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_boat, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_bike, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_bus, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_car, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_railway, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_run, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_subway, size: 80, color: Colors.blueGrey),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.directions_walk, size: 80, color: Colors.blueGrey),
+        ),
+      ],
+    ));
+  }
+}
+
+class ColorSelector extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (ListView(
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        // @TODO: あとでMapで書くように変更するよ
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.blue[300]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.green[300]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.red[300]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.yellow[300]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.purple[300]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.orange[300]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.lens, size: 50, color: Colors.pink[300]),
+        ),
+      ],
     ));
   }
 }
@@ -105,8 +323,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
         },
         child: Card(
           color: tempHabit.color, //Colors.blue[200],
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Stack(
             children: <Widget>[
               Align(
@@ -130,8 +347,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                       SizedBox(height: 150),
                       Text(
                         '${tempHabit.title}',
-                        style: TextStyle(
-                            fontSize: 42, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 50),
                       Text('Last 3 Successes'),
@@ -151,8 +367,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
 
 Route _createRoute(BuildContext context, int index) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        FullPageCard(index: index),
+    pageBuilder: (context, animation, secondaryAnimation) => FullPageCard(index: index),
     // transitionsBuilder: (context, animation, secondaryAnimation, child) {
     //   return child;
     // },
@@ -225,8 +440,7 @@ class _FullPageCardState extends State<FullPageCard> {
                     SizedBox(height: 20),
                     Text(
                       '${tempHabit.title}',
-                      style:
-                          TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 50),
                     Row(
@@ -240,8 +454,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               onPressed: () => setState(() => {
                                     result = 1,
                                   }),
-                              color:
-                                  result == 1 ? Colors.black : Colors.blueGrey,
+                              color: result == 1 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Excellent',
@@ -257,8 +470,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               onPressed: () => setState(() => {
                                     result = 2,
                                   }),
-                              color:
-                                  result == 2 ? Colors.black : Colors.blueGrey,
+                              color: result == 2 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Nice',
@@ -280,8 +492,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               onPressed: () => setState(() => {
                                     result = 3,
                                   }),
-                              color:
-                                  result == 3 ? Colors.black : Colors.blueGrey,
+                              color: result == 3 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Chobit',
@@ -297,8 +508,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               onPressed: () => setState(() => {
                                     result = 4,
                                   }),
-                              color:
-                                  result == 4 ? Colors.black : Colors.blueGrey,
+                              color: result == 4 ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Break',
@@ -340,7 +550,7 @@ class ArrangedCardWidget extends StatelessWidget {
           spacing: 10,
           runSpacing: 10,
           children: <Widget>[
-            for (var i = 0; i < numOfHabit; i++) SquareCard(index: i)
+            for (var i = 0; i < numOfHabit + 1; i++) (i == numOfHabit) ? AddHabitSqure() : SquareCard(index: i),
           ],
         ),
       ),
@@ -369,8 +579,7 @@ class _SquareCard extends State<SquareCard> {
         height: cardScale,
         child: Card(
           color: tempHabit.color,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Stack(
             children: <Widget>[
               Center(
@@ -393,8 +602,7 @@ class _SquareCard extends State<SquareCard> {
                       Spacer(flex: 3),
                       Text(
                         '${tempHabit.title}',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Spacer(flex: 1),
                     ],
