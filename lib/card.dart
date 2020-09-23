@@ -138,12 +138,25 @@ Route _createNewHabitRoute(BuildContext context) {
   );
 }
 
-class NewHabitPage extends StatelessWidget {
+class NewHabitPage extends StatefulWidget {
+  NewHabitPage({Key key}) : super(key: key);
+  @override
+  _NewHabitPageState createState() => _NewHabitPageState();
+}
+
+class _NewHabitPageState extends State<NewHabitPage> {
+  Color containerColor = Colors.blueGrey[200];
+  void changeColor(Color color) {
+    setState(() {
+      containerColor = color;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
       body: Container(
-        color: Colors.blueGrey[200],
+        color: containerColor,
         child: Column(
           children: <Widget>[
             Container(
@@ -194,7 +207,7 @@ class NewHabitPage extends StatelessWidget {
             Spacer(flex: 1),
             Container(
               height: 100,
-              child: ColorSelector(),
+              child: ColorSelector(changeColor: changeColor),
             ),
             Spacer(flex: 2),
             Row(
@@ -222,7 +235,13 @@ class NewHabitPage extends StatelessWidget {
   }
 }
 
-class IconSelector extends StatelessWidget {
+class IconSelector extends StatefulWidget {
+  IconSelector({Key key}) : super(key: key);
+  @override
+  _IconSelectorState createState() => _IconSelectorState();
+}
+
+class _IconSelectorState extends State<IconSelector> {
   @override
   Widget build(BuildContext context) {
     return (ListView(
@@ -266,41 +285,33 @@ class IconSelector extends StatelessWidget {
   }
 }
 
-class ColorSelector extends StatelessWidget {
+class ColorSelector extends StatefulWidget {
+  final Function changeColor;
+  ColorSelector({Key key, this.changeColor}) : super(key: key);
+  @override
+  _ColorSelectorState createState() => _ColorSelectorState();
+}
+
+class _ColorSelectorState extends State<ColorSelector> {
+  int selectedColorId = 0;
+  final List<HabitColor> habitColors = getAvailableHabitColors();
   @override
   Widget build(BuildContext context) {
     return (ListView(
       scrollDirection: Axis.horizontal,
       children: <Widget>[
-        // @TODO: あとでMapで書くように変更するよ
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.blue[300]),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.green[300]),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.red[300]),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.yellow[300]),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.purple[300]),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.orange[300]),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.lens, size: 50, color: Colors.pink[300]),
-        ),
+        for (var hc in habitColors)
+          (hc.id == selectedColorId) // 選択中の色は選択肢から外す
+              ? Container() // カラ
+              : Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: IconButton(
+                      icon: Icon(Icons.lens, size: 50, color: hc.buttonColor),
+                      onPressed: () => setState(() {
+                            selectedColorId = hc.id;
+                            widget.changeColor(hc.color);
+                          })),
+                ),
       ],
     ));
   }

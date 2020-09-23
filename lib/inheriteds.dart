@@ -16,9 +16,7 @@ class MyInherited extends StatefulWidget {
   static MyInheritedState of(BuildContext context, {bool listen = true}) {
     return (listen
         ? context.dependOnInheritedWidgetOfExactType<_Inherited>().state
-        : (context.getElementForInheritedWidgetOfExactType<_Inherited>().widget
-                as _Inherited)
-            .state);
+        : (context.getElementForInheritedWidgetOfExactType<_Inherited>().widget as _Inherited).state);
   }
 }
 
@@ -36,6 +34,7 @@ class MyInheritedState extends State<MyInherited> {
   int numOfHabit = 3; // テスト用にとりあえず3個にしている
 }
 
+// テスト用初期値
 List<Habit> makeInit() {
   List<Habit> hb = new List<Habit>();
   hb.add(initialHabit);
