@@ -291,17 +291,19 @@ class _ColorSelectorState extends State<ColorSelector> {
       scrollDirection: Axis.horizontal,
       children: <Widget>[
         for (var hc in habitColors)
-          (hc.id == selectedColorId) // 選択中の色は選択肢から外す
-              ? Container() // カラ
-              : Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: IconButton(
-                      icon: Icon(Icons.lens, size: 50, color: hc.buttonColor),
-                      onPressed: () => setState(() {
-                            selectedColorId = hc.id;
-                            widget.changeColor(hc.color);
-                          })),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: IconButton(
+                icon: Icon(
+                  (hc.id == selectedColorId) ? Icons.check_circle_outline : Icons.lens,
+                  size: 50,
+                  color: hc.buttonColor,
                 ),
+                onPressed: () => setState(() {
+                      selectedColorId = hc.id;
+                      widget.changeColor(hc.color);
+                    })),
+          ),
       ],
     ));
   }
