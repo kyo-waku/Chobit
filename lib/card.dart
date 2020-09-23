@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'inheriteds.dart';
-import 'Defines.dart';
+import 'define.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({Key key}) : super(key: key);
@@ -64,10 +64,12 @@ class _SwipableCardState extends State<SwipableCardWidget> {
   int _index = 0;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double scrollViewHeight = size.height * 0.7;
     var numOfHabit = MyInherited.of(context, listen: true).numOfHabit;
     return (Center(
       child: SizedBox(
-        height: 600, // card height
+        height: scrollViewHeight, // card height
         child: PageView.builder(
           itemCount: numOfHabit,
           controller: PageController(viewportFraction: 0.8),
@@ -77,7 +79,7 @@ class _SwipableCardState extends State<SwipableCardWidget> {
           itemBuilder: (_, i) {
             return (Transform.scale(
               scale: i == _index ? 0.9 : 0.9,
-              child: CardHistoryMode(index: i % 2),
+              child: CardHistoryMode(index: i),
             ));
           },
         ),
@@ -114,7 +116,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                   child: Icon(
                     tempHabit.icon, //Icons.directions_run,
                     color: Colors.blueGrey,
-                    size: 240.0,
+                    size: 200.0,
                   ),
                 ),
               ),
@@ -338,7 +340,7 @@ class ArrangedCardWidget extends StatelessWidget {
           spacing: 10,
           runSpacing: 10,
           children: <Widget>[
-            for (var i = 0; i < numOfHabit; i++) SquareCard(index: (i % 2))
+            for (var i = 0; i < numOfHabit; i++) SquareCard(index: i)
           ],
         ),
       ),

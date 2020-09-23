@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Defines.dart';
+import 'define.dart';
 
 // Inherited
 class MyInherited extends StatefulWidget {
@@ -33,13 +33,14 @@ class MyInheritedState extends State<MyInherited> {
   }
 
   List<Habit> habit = makeInit();
-  int numOfHabit = 10; // テスト用にとりあえず10個にしている
+  int numOfHabit = 3; // テスト用にとりあえず3個にしている
 }
 
 List<Habit> makeInit() {
   List<Habit> hb = new List<Habit>();
   hb.add(initialHabit);
   hb.add(initialHabit2);
+  hb.add(initialHabit3);
   return hb;
 }
 

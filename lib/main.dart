@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './settings.dart';
-import './chart.dart';
-import './card.dart';
-import './inheriteds.dart';
+import 'settings.dart';
+import 'chart.dart';
+import 'card.dart';
+import 'inheriteds.dart';
 
 void main() {
   runApp(MyApp());

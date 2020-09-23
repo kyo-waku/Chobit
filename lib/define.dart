@@ -24,3 +24,9 @@ Habit initialHabit2 = new Habit(
   Colors.green[200],
   Icons.directions_bike,
 );
+
+Habit initialHabit3 = new Habit(
+  'testOrange',
+  Colors.orange[200],
+  Icons.directions_transit,
+);
