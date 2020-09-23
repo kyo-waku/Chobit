@@ -152,6 +152,15 @@ class _NewHabitPageState extends State<NewHabitPage> {
     });
   }
 
+  IconData selectedIconData = Icons.help_outline;
+  void changeIcon(IconData icon) {
+    setState(() {
+      selectedIconData = icon;
+    });
+  }
+
+  final List<HabitIcon> habitIcons = getAvailableHabitIcons();
+
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
@@ -172,7 +181,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
                   Opacity(
                     opacity: 0.5,
                     child: Icon(
-                      Icons.help_outline,
+                      selectedIconData,
                       color: Colors.blueGrey,
                       size: 50.0,
                     ),
@@ -236,50 +245,31 @@ class _NewHabitPageState extends State<NewHabitPage> {
 }
 
 class IconSelector extends StatefulWidget {
-  IconSelector({Key key}) : super(key: key);
+  final Function changeIcon;
+  IconSelector({Key key, this.changeIcon}) : super(key: key);
   @override
   _IconSelectorState createState() => _IconSelectorState();
 }
 
 class _IconSelectorState extends State<IconSelector> {
+  int selectedIconId = 0;
+  final List<HabitIcon> habitIcons = getAvailableHabitIcons();
   @override
   Widget build(BuildContext context) {
     return (ListView(
       scrollDirection: Axis.horizontal,
       children: <Widget>[
-        // @TODO: あとでMapで書くように変更するよ
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_boat, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_bike, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_bus, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_car, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_railway, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_run, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_subway, size: 80, color: Colors.blueGrey),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Icon(Icons.directions_walk, size: 80, color: Colors.blueGrey),
-        ),
+        for (var hi in habitIcons)
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: IconButton(
+              icon: Icon(hi.icon, size: 80, color: ((hi.id == selectedIconId) ? Colors.black : hi.iconColor)),
+              onPressed: () => setState(() {
+                selectedIconId = hi.id;
+                //widget.changeIcon(hi.icon);
+              }),
+            ),
+          ),
       ],
     ));
   }
