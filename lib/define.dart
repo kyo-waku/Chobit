@@ -45,16 +45,42 @@ List<HabitColor> getAvailableHabitColors() {
 // 習慣登録で使用可能なアイコン集
 List<HabitIcon> getAvailableHabitIcons() {
   var habitIcons = new List<HabitIcon>();
-  habitIcons.add(new HabitIcon(1, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(2, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(3, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(4, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(5, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(6, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(7, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(8, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(9, Icons.directions_walk, Colors.grey));
-  habitIcons.add(new HabitIcon(10, Icons.directions_walk, Colors.grey));
+  habitIcons.add(new HabitIcon(1, Icons.directions_walk, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(2, Icons.directions_run, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(3, Icons.directions_bike, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(4, Icons.alarm_on, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(5, Icons.audiotrack, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(6, Icons.color_lens, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(7, Icons.build, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(8, Icons.card_travel, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(9, Icons.cake, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(10, Icons.camera_alt, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(11, Icons.card_giftcard, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(12, Icons.child_friendly, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(13, Icons.computer, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(14, Icons.create, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(15, Icons.attach_money, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(16, Icons.fastfood, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(17, Icons.filter_hdr, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(18, Icons.filter_vintage, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(19, Icons.fitness_center, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(20, Icons.free_breakfast, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(21, Icons.headset_mic, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(22, Icons.hearing, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(23, Icons.hot_tub, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(24, Icons.local_bar, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(25, Icons.import_contacts, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(26, Icons.insert_emoticon, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(27, Icons.local_florist, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(28, Icons.local_grocery_store, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(29, Icons.local_movies, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(30, Icons.pets, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(31, Icons.public, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(32, Icons.restaurant, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(33, Icons.school, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(34, Icons.local_car_wash, Colors.blueGrey));
+  habitIcons.add(new HabitIcon(35, Icons.wc, Colors.blueGrey));
+
   return habitIcons;
 }
 

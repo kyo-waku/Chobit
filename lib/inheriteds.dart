@@ -30,8 +30,23 @@ class MyInheritedState extends State<MyInherited> {
     );
   }
 
-  List<Habit> habit = makeInit();
-  int numOfHabit = 3; // テスト用にとりあえず3個にしている
+  List<Habit> habit = new List<Habit>();
+
+  List<Habit> get habits {
+    if (habit.isEmpty) {
+      habit = makeInit();
+    }
+    return habit;
+  }
+
+  int get numOfHabit {
+    if (habit.isEmpty) {
+      habit = makeInit();
+    }
+    return habit.length;
+  }
+
+  void addNewHabit(Habit newHabit) => setState(() => habit.add(newHabit));
 }
 
 // テスト用初期値

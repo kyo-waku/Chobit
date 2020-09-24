@@ -145,10 +145,10 @@ class NewHabitPage extends StatefulWidget {
 }
 
 class _NewHabitPageState extends State<NewHabitPage> {
-  Color containerColor = Colors.blueGrey[200];
+  Color selectedContainerColor = Colors.blueGrey[200];
   void changeColor(Color color) {
     setState(() {
-      containerColor = color;
+      selectedContainerColor = color;
     });
   }
 
@@ -159,13 +159,14 @@ class _NewHabitPageState extends State<NewHabitPage> {
     });
   }
 
+  TextEditingController habitNameController = TextEditingController();
   final List<HabitIcon> habitIcons = getAvailableHabitIcons();
-
   @override
   Widget build(BuildContext context) {
+    var addNewHabit = MyInherited.of(context, listen: true).addNewHabit;
     return (Scaffold(
       body: Container(
-        color: containerColor,
+        color: selectedContainerColor,
         child: Column(
           children: <Widget>[
             Container(
@@ -183,7 +184,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
                     child: Icon(
                       selectedIconData,
                       color: Colors.blueGrey,
-                      size: 50.0,
+                      size: 80.0,
                     ),
                   ),
                   Spacer(flex: 1),
@@ -194,6 +195,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
               child: Padding(
                 padding: EdgeInsets.all(16),
                 child: TextFormField(
+                  controller: habitNameController,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   decoration: const InputDecoration(
@@ -211,7 +213,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
             Spacer(flex: 1),
             Container(
               height: 100,
-              child: IconSelector(),
+              child: IconSelector(changeIcon: changeIcon),
             ),
             Spacer(flex: 1),
             Container(
@@ -231,6 +233,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
                 IconButton(
                   icon: Icon(Icons.check),
                   onPressed: () {
+                    addNewHabit(new Habit(habitNameController.text, selectedContainerColor, selectedIconData));
                     Navigator.of(context).pop();
                   },
                 ),
@@ -261,12 +264,13 @@ class _IconSelectorState extends State<IconSelector> {
       children: <Widget>[
         for (var hi in habitIcons)
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
             child: IconButton(
               icon: Icon(hi.icon, size: 80, color: ((hi.id == selectedIconId) ? Colors.black : hi.iconColor)),
+              iconSize: 80,
               onPressed: () => setState(() {
                 selectedIconId = hi.id;
-                //widget.changeIcon(hi.icon);
+                widget.changeIcon(hi.icon);
               }),
             ),
           ),
@@ -319,52 +323,54 @@ class CardHistoryMode extends StatefulWidget {
 class _CardHistoryModeState extends State<CardHistoryMode> {
   @override
   Widget build(BuildContext context) {
-    var tempHabit = MyInherited.of(context, listen: true).habit[widget.index];
+    var tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
     return (GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(_createRoute(context, widget.index));
-        },
-        child: Card(
-          color: tempHabit.color, //Colors.blue[200],
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Stack(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Opacity(
-                  opacity: 0.5,
-                  child: Icon(
-                    tempHabit.icon, //Icons.directions_run,
-                    color: Colors.blueGrey,
-                    size: 200.0,
-                  ),
+      onTap: () {
+        Navigator.of(context).push(_createRoute(context, widget.index));
+      },
+      child: Card(
+        color: tempHabit.color, //Colors.blue[200],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          children: <Widget>[
+            Spacer(flex: 1),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Opacity(
+                opacity: 0.5,
+                child: Icon(
+                  tempHabit.icon, //Icons.directions_run,
+                  color: Colors.blueGrey,
+                  size: 200.0,
                 ),
               ),
-              SizedBox(height: 50),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 150),
-                      Text(
-                        '${tempHabit.title}',
-                        style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 50),
-                      Text('Last 3 Successes'),
-                      SizedBox(height: 30),
-                      Text('7days ago'),
-                      Text('4days ago'),
-                      Text('2days ago'),
-                    ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      '${tempHabit.title}',
+                      style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
+                  SizedBox(height: 50),
+                  Text('Last 3 Successes'),
+                  SizedBox(height: 30),
+                  Text('7days ago'),
+                  Text('4days ago'),
+                  Text('2days ago'),
+                ],
               ),
-            ],
-          ),
-        )));
+            ),
+            Spacer(flex: 2),
+          ],
+        ),
+      ),
+    ));
   }
 }
 
@@ -398,7 +404,7 @@ class FullPageCard extends StatefulWidget {
 class _FullPageCardState extends State<FullPageCard> {
   int result = 4; // 1: Excellent, 2: Nice, 3: Chobit, 4: Break
   Widget build(BuildContext context) {
-    Habit tempHabit = MyInherited.of(context, listen: true).habit[widget.index];
+    Habit tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
     return Scaffold(
       body:
           // ページビューは一旦停止中
@@ -441,9 +447,12 @@ class _FullPageCardState extends State<FullPageCard> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 20),
-                    Text(
-                      '${tempHabit.title}',
-                      style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        '${tempHabit.title}',
+                        style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     SizedBox(height: 50),
                     Row(
@@ -571,7 +580,7 @@ class SquareCard extends StatefulWidget {
 class _SquareCard extends State<SquareCard> {
   @override
   Widget build(BuildContext context) {
-    var tempHabit = MyInherited.of(context, listen: true).habit[widget.index];
+    var tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
     double cardScale = 180;
     return (GestureDetector(
       onTap: () {
@@ -603,9 +612,12 @@ class _SquareCard extends State<SquareCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Spacer(flex: 3),
-                      Text(
-                        '${tempHabit.title}',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          '${tempHabit.title}',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Spacer(flex: 1),
                     ],
