@@ -4,12 +4,25 @@ class Habit {
   String title;
   Color color;
   IconData icon;
+  List<History> histories;
+  Habit(this.title, this.color, this.icon, this.histories);
+}
 
-  Habit(this.title, this.color, this.icon);
+class History {
+  DateTime dateTime;
+  Score score;
+  History(this.dateTime, this.score);
+}
+
+enum Score { Nan, Excellent, Nice, Chobit, Break }
+
+// 便利関数
+bool isSameDate(DateTime src, DateTime trg) {
+  return (src.year == trg.year && src.month == trg.month && src.day == trg.day);
 }
 
 String dateTimeFormatter(DateTime date) {
-  return '${date.year} / ${date.month} / ${date.day}';
+  return '${date.year}/${date.month}/${date.day}';
 }
 
 // 習慣登録用ハイパーパラメーター
@@ -89,16 +102,30 @@ Habit initialHabit = new Habit(
   'testBlue',
   Colors.blue[200],
   Icons.directions_run,
+  initialHistory,
 );
+List<History> initialHistory = [
+  History(DateTime(2020, 9, 20, 12, 34), Score.Break),
+];
 
 Habit initialHabit2 = new Habit(
   'testGreen',
   Colors.green[200],
   Icons.directions_bike,
+  initialHistory2,
 );
-
+List<History> initialHistory2 = [
+  History(DateTime(2020, 9, 20, 12, 34), Score.Break),
+  History(DateTime(2020, 9, 22, 12, 34), Score.Break),
+];
 Habit initialHabit3 = new Habit(
   'testOrange',
   Colors.orange[200],
   Icons.directions_transit,
+  initialHistory3,
 );
+List<History> initialHistory3 = [
+  History(DateTime(2020, 9, 20, 12, 34), Score.Break),
+  History(DateTime(2020, 9, 23, 12, 34), Score.Break),
+  History(DateTime(2020, 9, 24, 12, 34), Score.Break),
+];

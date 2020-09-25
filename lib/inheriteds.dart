@@ -47,6 +47,15 @@ class MyInheritedState extends State<MyInherited> {
   }
 
   void addNewHabit(Habit newHabit) => setState(() => habit.add(newHabit));
+
+  void newRecord(String habitTitle, Score score) => {
+        // 一旦タイトルで一致させているが、UUIDかなんかに変える予定
+        setState(() => {
+              (habit.firstWhere((x) => (x.title == habitTitle)).histories.where((x) => isSameDate(x.dateTime, DateTime.now()))).isEmpty
+                  ? habit.firstWhere((x) => (x.title == habitTitle)).histories.add(new History(DateTime.now(), score))
+                  : habit.firstWhere((x) => (x.title == habitTitle)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
+            })
+      };
 }
 
 // テスト用初期値

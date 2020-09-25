@@ -40,7 +40,7 @@ class _CardWidgetState extends State<CardWidget> {
             child: Text(
               '${dateTimeFormatter(new DateTime.now())}',
               textAlign: TextAlign.center,
-              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5, fontWeightDelta: 2),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
           ),
           _currentCardView,
@@ -233,7 +233,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
                 IconButton(
                   icon: Icon(Icons.check),
                   onPressed: () {
-                    addNewHabit(new Habit(habitNameController.text, selectedContainerColor, selectedIconData));
+                    addNewHabit(new Habit(habitNameController.text, selectedContainerColor, selectedIconData, null));
                     Navigator.of(context).pop();
                   },
                 ),
@@ -321,6 +321,7 @@ class CardHistoryMode extends StatefulWidget {
 }
 
 class _CardHistoryModeState extends State<CardHistoryMode> {
+  final int maxRecents = 3;
   @override
   Widget build(BuildContext context) {
     var tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
@@ -358,11 +359,19 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                     ),
                   ),
                   SizedBox(height: 50),
-                  Text('Last 3 Successes'),
+                  Text(
+                    'Last ' + maxRecents.toString() + ' Successes',
+                    style: TextStyle(fontSize: 18),
+                  ),
                   SizedBox(height: 30),
-                  Text('7days ago'),
-                  Text('4days ago'),
-                  Text('2days ago'),
+                  for (var i = 0; i < tempHabit.histories.length && i < maxRecents; i++)
+                    Text(
+                      '${DateTime.now().difference(tempHabit.histories[tempHabit.histories.length - i - 1].dateTime).inDays}' +
+                          'days ago' +
+                          ': ' +
+                          '${tempHabit.histories[tempHabit.histories.length - i - 1].score.toString().split('.')[1]}',
+                      style: TextStyle(fontSize: 14),
+                    )
                 ],
               ),
             ),
@@ -402,9 +411,11 @@ class FullPageCard extends StatefulWidget {
 }
 
 class _FullPageCardState extends State<FullPageCard> {
-  int result = 4; // 1: Excellent, 2: Nice, 3: Chobit, 4: Break
+  // Score result = Score.Nan;
   Widget build(BuildContext context) {
     Habit tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
+    Score result = tempHabit.histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now()), orElse: () => History(DateTime.now(), Score.Nan)).score;
+
     return Scaffold(
       body:
           // ページビューは一旦停止中
@@ -464,9 +475,10 @@ class _FullPageCardState extends State<FullPageCard> {
                               icon: Icon(Icons.brightness_low),
                               iconSize: 50,
                               onPressed: () => setState(() => {
-                                    result = 1,
+                                    result = Score.Excellent,
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
                                   }),
-                              color: result == 1 ? Colors.black : Colors.blueGrey,
+                              color: result == Score.Excellent ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Excellent',
@@ -480,9 +492,10 @@ class _FullPageCardState extends State<FullPageCard> {
                               icon: Icon(Icons.thumb_up),
                               iconSize: 50,
                               onPressed: () => setState(() => {
-                                    result = 2,
+                                    result = Score.Nice,
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
                                   }),
-                              color: result == 2 ? Colors.black : Colors.blueGrey,
+                              color: result == Score.Nice ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Nice',
@@ -502,9 +515,10 @@ class _FullPageCardState extends State<FullPageCard> {
                               icon: Icon(Icons.copyright),
                               iconSize: 50,
                               onPressed: () => setState(() => {
-                                    result = 3,
+                                    result = Score.Chobit,
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
                                   }),
-                              color: result == 3 ? Colors.black : Colors.blueGrey,
+                              color: result == Score.Chobit ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Chobit',
@@ -518,9 +532,10 @@ class _FullPageCardState extends State<FullPageCard> {
                               icon: Icon(Icons.local_cafe),
                               iconSize: 50,
                               onPressed: () => setState(() => {
-                                    result = 4,
+                                    result = Score.Break,
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
                                   }),
-                              color: result == 4 ? Colors.black : Colors.blueGrey,
+                              color: result == Score.Break ? Colors.black : Colors.blueGrey,
                             ),
                             Text(
                               'Break',
