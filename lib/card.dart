@@ -164,83 +164,98 @@ class _NewHabitPageState extends State<NewHabitPage> {
   @override
   Widget build(BuildContext context) {
     var addNewHabit = MyInherited.of(context, listen: true).addNewHabit;
+    bool _isInvalidInputs =
+        (habitNameController.text.length > 0) && (selectedIconData != Icons.help_outline) && (selectedContainerColor != Colors.blueGrey[200]);
     return (Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
         color: selectedContainerColor,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 250,
-              decoration: new BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Spacer(flex: 2),
-                  Opacity(
-                    opacity: 0.5,
-                    child: Icon(
-                      selectedIconData,
-                      color: Colors.blueGrey,
-                      size: 80.0,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 250,
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Spacer(flex: 2),
+                    Opacity(
+                      opacity: 0.5,
+                      child: Icon(
+                        selectedIconData,
+                        color: Colors.blueGrey,
+                        size: 80.0,
+                      ),
                     ),
-                  ),
-                  Spacer(flex: 1),
-                ],
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: TextFormField(
-                  controller: habitNameController,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  decoration: const InputDecoration(
-                    hintText: 'Habit name',
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter your new habit name';
-                    }
-                    return null;
-                  },
+                    Spacer(flex: 1),
+                  ],
                 ),
               ),
-            ),
-            Spacer(flex: 1),
-            Container(
-              height: 100,
-              child: IconSelector(changeIcon: changeIcon),
-            ),
-            Spacer(flex: 1),
-            Container(
-              height: 100,
-              child: ColorSelector(changeColor: changeColor),
-            ),
-            Spacer(flex: 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: TextFormField(
+                    controller: habitNameController,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    decoration: const InputDecoration(
+                      hintText: 'Habit name',
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter your new habit name';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.check),
-                  onPressed: () {
-                    addNewHabit(new Habit(habitNameController.text, selectedContainerColor, selectedIconData, null));
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-            Spacer(flex: 1)
-          ],
+              ),
+              SizedBox(height: 50), //Spacer(flex: 1),
+              Container(
+                height: 100,
+                child: IconSelector(changeIcon: changeIcon),
+              ),
+              SizedBox(height: 50), //Spacer(flex: 1),
+              Container(
+                height: 100,
+                child: ColorSelector(changeColor: changeColor),
+              ),
+              SizedBox(height: 100), //Spacer(flex: 2),
+              _isInvalidInputs
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.check),
+                          onPressed: () {
+                            if (_isInvalidInputs) {
+                              addNewHabit(
+                                  new Habit(habitNameController.text, selectedContainerColor, selectedIconData, [History(DateTime.now(), Score.Break)]));
+                              Navigator.of(context).pop();
+                            }
+                          },
+                        )
+                      ],
+                    )
+                  : IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+              //Spacer(flex: 1)
+            ],
+          ),
         ),
       ),
     ));
@@ -322,6 +337,7 @@ class CardHistoryMode extends StatefulWidget {
 
 class _CardHistoryModeState extends State<CardHistoryMode> {
   final int maxRecents = 3;
+
   @override
   Widget build(BuildContext context) {
     var tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
