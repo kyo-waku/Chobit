@@ -7,62 +7,237 @@ class ChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (SafeArea(
-        //Center(
-        // child: Container(
-        //   color: Colors.blue,
-        //   width: 500,
-        //   height: 100,
-        //   child: Text('Chart Widget'),
-        // ),
         child: Center(
             child: Column(
       children: [
         //1
         Text('Recent Actions'),
         //2 ToDo:カレンダーの表示状態を固定したい。
-        HeatMapCalendar(
-          input: {
-            TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
-            TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))):
-                35,
-            TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))):
-                14,
-            TimeUtils.removeTime(DateTime.now()): 5,
-          },
-          colorThresholds: {
-            1: Colors.green[100],
-            10: Colors.green[300],
-            30: Colors.green[500]
-          },
-          weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-          monthsLabels: [
-            "",
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          squareSize: 20.0,
-          textOpacity: 0.3,
-          labelTextColor: Colors.blueGrey,
-          dayTextColor: Colors.blue[500],
-        ),
-        //3
-        Container(
-          child: Center(
+        // HeatMapCalendar(
+        //   input: {
+        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 6))): 5,
+        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 5))):
+        //         55,
+        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 4))):
+        //         14,
+        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
+        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))):
+        //         35,
+        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))):
+        //         14,
+        //     TimeUtils.removeTime(DateTime.now()): 5,
+        //   },
+        //   colorThresholds: {
+        //     1: Colors.green[100],
+        //     10: Colors.green[300],
+        //     30: Colors.green[500]
+        //   },
+        //   weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+        //   monthsLabels: [
+        //     "",
+        //     "Jan",
+        //     "Feb",
+        //     "Mar",
+        //     "Apr",
+        //     "May",
+        //     "Jun",
+        //     "Jul",
+        //     "Aug",
+        //     "Sep",
+        //     "Oct",
+        //     "Nov",
+        //     "Dec",
+        //   ],
+        //   squareSize: 20.0,
+        //   textOpacity: 0.3,
+        //   labelTextColor: Colors.blueGrey,
+        //   dayTextColor: Colors.blue[500],
+        // ),
+
+        //2-1
+        Center(
+          child: Container(
+            width: 500,
+            height: 250,
             child: Echarts(
-              //ToDo：背景色をお洒落にしたい。ContainerのColor指定だと反映されない
+              extraScript: '''
+              var data = getVirtulData(2020);
+
+              function getVirtulData(year) {
+                year = year || '2020';
+                var date = +echarts.number.parseDate(year + '-01-01');
+                var end = +echarts.number.parseDate((+year + 1) + '-01-01');
+                var dayTime = 3600 * 24 * 1000;
+                var data = [];
+                for (var time = date; time < end; time += dayTime) {
+                    data.push([
+                        echarts.format.formatTime('yyyy-MM-dd', time),
+                        Math.floor(Math.random() * 10000)
+                    ]);
+                }
+                return data;
+              }
+              ''',
+              option: '''//ToDo：期間ごとの動的な表示
+                    {
+                      backgroundColor: '#404a59',
+                      title: {
+                          top: 0,
+                          left: 'center',
+                          textStyle: {
+                              color: '#fff'
+                          }
+                      },
+                      tooltip: {
+                          trigger: 'item'
+                      },
+                      legend: {
+                          top: '0',
+                          left: '100',
+                          data: ['ActivityScore', 'Top 12'],
+                          textStyle: {
+                              color: '#fff'
+                          }
+                      },
+                      calendar: [{
+                          top: 50,
+                          left: 'center',
+                          range: ['2020-01-01', '2020-04-30'],
+                          splitLine: {
+                              show: true,
+                              lineStyle: {
+                                  color: '#000',
+                                  width: 2,
+                                  type: 'solid'
+                              }
+                          },
+                          yearLabel: {
+                              formatter: '{start}  1st',
+                              textStyle: {
+                                  color: '#fff'
+                              }
+                          },
+                          itemStyle: {
+                              color: '#323c48',
+                              borderWidth: 1,
+                              borderColor: '#111'
+                          }
+                      }, {
+                          top: 340,
+                          left: 'center',
+                          range: ['2020-07-01', '2020-12-31'],
+                          splitLine: {
+                              show: true,
+                              lineStyle: {
+                                  color: '#000',
+                                  width: 2,
+                                  type: 'solid'
+                              }
+                          },
+                          yearLabel: {
+                              formatter: '{start}  2nd',
+                              textStyle: {
+                                  color: '#fff'
+                              }
+                          },
+                          itemStyle: {
+                              color: '#323c48',
+                              borderWidth: 1,
+                              borderColor: '#111'
+                          }
+                      }],
+                      series: [
+                          {
+                              name: 'ActivityScore',
+                              type: 'scatter',
+                              coordinateSystem: 'calendar',
+                              data: data,
+                              symbolSize: function (val) {
+                                  return val[1] / 500;
+                              },
+                              itemStyle: {
+                                  color: '#ddb926'
+                              }
+                          },
+                          {
+                              name: 'ActivityScore',
+                              type: 'scatter',
+                              coordinateSystem: 'calendar',
+                              calendarIndex: 1,
+                              data: data,
+                              symbolSize: function (val) {
+                                  return val[1] / 500;
+                              },
+                              itemStyle: {
+                                  color: '#ddb926'
+                              }
+                          },
+                          {
+                              name: 'Top 12',
+                              type: 'effectScatter',
+                              coordinateSystem: 'calendar',
+                              calendarIndex: 1,
+                              data: data.sort(function (a, b) {
+                                  return b[1] - a[1];
+                              }).slice(0, 12),
+                              symbolSize: function (val) {
+                                  return val[1] / 500;
+                              },
+                              showEffectOn: 'render',
+                              rippleEffect: {
+                                  brushType: 'stroke'
+                              },
+                              hoverAnimation: true,
+                              itemStyle: {
+                                  color: '#f4e925',
+                                  shadowBlur: 10,
+                                  shadowColor: '#333'
+                              },
+                              zlevel: 1
+                          },
+                          {
+                              name: 'Top 12',
+                              type: 'effectScatter',
+                              coordinateSystem: 'calendar',
+                              data: data.sort(function (a, b) {
+                                  return b[1] - a[1];
+                              }).slice(0, 12),
+                              symbolSize: function (val) {
+                                  return val[1] / 500;
+                              },
+                              showEffectOn: 'render',
+                              rippleEffect: {
+                                  brushType: 'stroke'
+                              },
+                              hoverAnimation: true,
+                              itemStyle: {
+                                  color: '#f4e925',
+                                  shadowBlur: 10,
+                                  shadowColor: '#333'
+                              },
+                              zlevel: 1
+                          }
+                      ]
+                  }
+                  ''',
+            ),
+          ),
+        ),
+
+        //3
+        Center(
+          child: Container(
+            child: Echarts(
+              // extraScript: '''
+              // var chart = echarts.init(dom, 'light');
+              // ''',
               option: '''
-                  {
-                    angleAxis: {
+                    {
+                      backgroundColor: '#404a59',
+                      textStyle: {
+                              color: '#fff'
+                      },
+                      angleAxis: {
                           type: 'category',
                           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Stu', 'Sun']
                       },
@@ -72,18 +247,21 @@ class ChartWidget extends StatelessWidget {
                       },
                       series: [{
                           type: 'bar',
+                          color: '#37A2DA', 
                           data: [1, 2, 3, 4, 3, 5, 1],
                           coordinateSystem: 'polar',
                           name: 'Running',
                           stack: 'a'
                         }, {
                           type: 'bar',
+                          color: '#32C5E9',
                           data: [2, 4, 4, 1, 3, 2, 1],
                           coordinateSystem: 'polar',
                           name: 'Coding',
                           stack: 'a'
                         }, {
                           type: 'bar',
+                          color: '#67E0E3',
                           data: [1, 2, 3, 4, 1, 2, 5],
                           coordinateSystem: 'polar',
                           name: 'Reading',
@@ -91,14 +269,17 @@ class ChartWidget extends StatelessWidget {
                         }],
                       legend: {
                           show: true,
-                          data: ['Running', 'Coding', 'Reading']
+                          data: ['Running', 'Coding', 'Reading'],
+                          textStyle: {
+                              color: '#fff'
+                          }
                       }
-                  }
-                ''',
+                    }
+                  ''',
             ),
+            width: 400,
+            height: 300,
           ),
-          width: 300,
-          height: 350,
         ),
       ], //Column children
     ))));
