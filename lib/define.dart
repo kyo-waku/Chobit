@@ -1,11 +1,57 @@
 import 'package:flutter/material.dart';
 
+// ありとあらゆる設定情報はここにぶちこんでkey-valueで格納する。
+class Properties {
+  int lastId;
+
+  Properties(this.lastId);
+}
+
 class Habit {
+  int id;
   String title;
   Color color;
   IconData icon;
   List<History> histories;
-  Habit(this.title, this.color, this.icon, this.histories);
+
+  Habit(this.id, this.title, this.color, this.icon, this.histories);
+}
+
+class HabitForSQL {
+  int id;
+  String title;
+  int colorhash;
+  int iconcodepoint;
+
+  HabitForSQL(this.id, this.title, this.colorhash, this.iconcodepoint);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'colorhash': colorhash,
+      'iconcodepoint': iconcodepoint,
+    };
+  }
+}
+
+HabitForSQL convertFromHabitToSQL(Habit habit) {
+  return new HabitForSQL(
+    habit.id,
+    habit.title,
+    habit.color.hashCode,
+    habit.icon.codePoint,
+  );
+}
+
+Habit convertFromSQLToHabit(HabitForSQL sql) {
+  return new Habit(
+    sql.id,
+    sql.title,
+    Color(sql.colorhash),
+    IconData(sql.iconcodepoint, fontFamily: 'MaterialIcons'),
+    null,
+  );
 }
 
 class History {
@@ -99,6 +145,7 @@ List<HabitIcon> getAvailableHabitIcons() {
 
 // テスト用初期値
 Habit initialHabit = new Habit(
+  1,
   'testBlue',
   Colors.blue[200],
   Icons.directions_run,
@@ -109,6 +156,7 @@ List<History> initialHistory = [
 ];
 
 Habit initialHabit2 = new Habit(
+  2,
   'testGreen',
   Colors.green[200],
   Icons.directions_bike,
@@ -119,6 +167,7 @@ List<History> initialHistory2 = [
   History(DateTime(2020, 9, 22, 12, 34), Score.Break),
 ];
 Habit initialHabit3 = new Habit(
+  3,
   'testOrange',
   Colors.orange[200],
   Icons.directions_transit,

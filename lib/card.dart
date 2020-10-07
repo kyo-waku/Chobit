@@ -62,7 +62,7 @@ class _SwipableCardState extends State<SwipableCardWidget> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double scrollViewHeight = size.height * 0.7;
-    var numOfHabit = MyInherited.of(context, listen: true).numOfHabit;
+    var numOfHabit = MyInherited.of(context, listen: true).habits.length;
     return (Center(
       child: SizedBox(
         height: scrollViewHeight, // card height
@@ -164,6 +164,8 @@ class _NewHabitPageState extends State<NewHabitPage> {
   @override
   Widget build(BuildContext context) {
     var addNewHabit = MyInherited.of(context, listen: true).addNewHabit;
+    var lastId = MyInherited.of(context, listen: true).props.lastId;
+    var numOfHabits = MyInherited.of(context, listen: true).habits.length;
     bool _isInvalidInputs =
         (habitNameController.text.length > 0) && (selectedIconData != Icons.help_outline) && (selectedContainerColor != Colors.blueGrey[200]);
     return (Scaffold(
@@ -239,8 +241,12 @@ class _NewHabitPageState extends State<NewHabitPage> {
                           icon: Icon(Icons.check),
                           onPressed: () {
                             if (_isInvalidInputs) {
-                              addNewHabit(
-                                  new Habit(habitNameController.text, selectedContainerColor, selectedIconData, [History(DateTime.now(), Score.Break)]));
+                              addNewHabit(new Habit(
+                                  /*lastId + 1*/ numOfHabits + 1,
+                                  habitNameController.text,
+                                  selectedContainerColor,
+                                  selectedIconData,
+                                  [History(DateTime.now(), Score.Break)]));
                               Navigator.of(context).pop();
                             }
                           },
@@ -380,14 +386,16 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                     style: TextStyle(fontSize: 18),
                   ),
                   SizedBox(height: 30),
-                  for (var i = 0; i < tempHabit.histories.length && i < maxRecents; i++)
-                    Text(
-                      '${DateTime.now().difference(tempHabit.histories[tempHabit.histories.length - i - 1].dateTime).inDays}' +
-                          'days ago' +
-                          ': ' +
-                          '${tempHabit.histories[tempHabit.histories.length - i - 1].score.toString().split('.')[1]}',
-                      style: TextStyle(fontSize: 14),
-                    )
+                  for (var i = 0; tempHabit.histories != null && i < tempHabit.histories.length && i < maxRecents; i++)
+                    (tempHabit.histories != null)
+                        ? Text(
+                            '${DateTime.now().difference(tempHabit.histories[tempHabit.histories.length - i - 1].dateTime).inDays}' +
+                                'days ago' +
+                                ': ' +
+                                '${tempHabit.histories[tempHabit.histories.length - i - 1].score.toString().split('.')[1]}',
+                            style: TextStyle(fontSize: 14),
+                          )
+                        : Container()
                 ],
               ),
             ),
@@ -430,7 +438,7 @@ class _FullPageCardState extends State<FullPageCard> {
   // Score result = Score.Nan;
   Widget build(BuildContext context) {
     Habit tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
-    Score result = tempHabit.histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now()), orElse: () => History(DateTime.now(), Score.Nan)).score;
+    Score result = tempHabit.histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now()), orElse: () => History(DateTime.now(), Score.Break)).score;
 
     return Scaffold(
       body:
@@ -492,7 +500,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Excellent,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
                                   }),
                               color: result == Score.Excellent ? Colors.black : Colors.blueGrey,
                             ),
@@ -509,7 +517,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Nice,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
                                   }),
                               color: result == Score.Nice ? Colors.black : Colors.blueGrey,
                             ),
@@ -532,7 +540,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Chobit,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
                                   }),
                               color: result == Score.Chobit ? Colors.black : Colors.blueGrey,
                             ),
@@ -549,7 +557,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Break,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.title, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
                                   }),
                               color: result == Score.Break ? Colors.black : Colors.blueGrey,
                             ),
@@ -583,7 +591,7 @@ class _FullPageCardState extends State<FullPageCard> {
 class ArrangedCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var numOfHabit = MyInherited.of(context, listen: true).numOfHabit;
+    var numOfHabit = MyInherited.of(context, listen: true).habits.length;
     Size size = MediaQuery.of(context).size;
     double scrollViewHeight = size.height * 0.7;
     return (Container(

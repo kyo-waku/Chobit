@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'define.dart';
+import 'datastore.dart';
 
 // Inherited
 class MyInherited extends StatefulWidget {
@@ -30,41 +31,49 @@ class MyInheritedState extends State<MyInherited> {
     );
   }
 
-  List<Habit> habit = new List<Habit>();
+  Properties propData;
+
+  Properties get props {
+    if (propData == null) {
+      propData = makeInitProp();
+    }
+    return propData;
+  }
+
+  List<Habit> habitData = new List<Habit>();
 
   List<Habit> get habits {
-    if (habit.isEmpty) {
-      habit = makeInit();
+    if (habitData.isEmpty) {
+      makeInitHabit();
     }
-    return habit;
+    return habitData;
   }
 
-  int get numOfHabit {
-    if (habit.isEmpty) {
-      habit = makeInit();
-    }
-    return habit.length;
+  void callAsyncInsert(Habit habit) async {
+    await insertHabit(habit);
   }
 
-  void addNewHabit(Habit newHabit) => setState(() => habit.add(newHabit));
+  Future<void> makeInitHabit() async {
+    getHabits().then((List<Habit> hbs) {
+      setState(() => habitData.addAll(hbs));
+    });
+  }
 
-  void newRecord(String habitTitle, Score score) => {
-        // 一旦タイトルで一致させているが、UUIDかなんかに変える予定
+  // テスト用初期値
+  // TODO: あとでkey-valueからの取り出しに変える
+  Properties makeInitProp() {
+    return (new Properties(0));
+  }
+
+  void addNewHabit(Habit newHabit) => {callAsyncInsert(newHabit), setState(() => habitData.add(newHabit))};
+
+  void newRecord(int habitId, Score score) => {
         setState(() => {
-              (habit.firstWhere((x) => (x.title == habitTitle)).histories.where((x) => isSameDate(x.dateTime, DateTime.now()))).isEmpty
-                  ? habit.firstWhere((x) => (x.title == habitTitle)).histories.add(new History(DateTime.now(), score))
-                  : habit.firstWhere((x) => (x.title == habitTitle)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
+              (habitData.firstWhere((x) => (x.id == habitId)).histories.where((x) => isSameDate(x.dateTime, DateTime.now()))).isEmpty
+                  ? habitData.firstWhere((x) => (x.id == habitId)).histories.add(new History(DateTime.now(), score))
+                  : habitData.firstWhere((x) => (x.id == habitId)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
             })
       };
-}
-
-// テスト用初期値
-List<Habit> makeInit() {
-  List<Habit> hb = new List<Habit>();
-  hb.add(initialHabit);
-  hb.add(initialHabit2);
-  hb.add(initialHabit3);
-  return hb;
 }
 
 class _Inherited extends InheritedWidget {
