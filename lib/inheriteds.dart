@@ -31,15 +31,6 @@ class MyInheritedState extends State<MyInherited> {
     );
   }
 
-  Properties propData;
-
-  Properties get props {
-    if (propData == null) {
-      propData = makeInitProp();
-    }
-    return propData;
-  }
-
   List<Habit> habitData = new List<Habit>();
 
   List<Habit> get habits {
@@ -60,18 +51,20 @@ class MyInheritedState extends State<MyInherited> {
   }
 
   // テスト用初期値
-  // TODO: あとでkey-valueからの取り出しに変える
-  Properties makeInitProp() {
-    return (new Properties(0));
-  }
+  void addNewHabit(Habit newHabit) => {
+        callAsyncInsert(newHabit),
+        setState(
+          () => habitData.add(newHabit),
+        ),
+      };
 
-  void addNewHabit(Habit newHabit) => {callAsyncInsert(newHabit), setState(() => habitData.add(newHabit))};
-
-  void newRecord(int habitId, Score score) => {
+  void newRecord(String habitUuid, Score score) => {
         setState(() => {
-              (habitData.firstWhere((x) => (x.id == habitId)).histories.where((x) => isSameDate(x.dateTime, DateTime.now()))).isEmpty
-                  ? habitData.firstWhere((x) => (x.id == habitId)).histories.add(new History(DateTime.now(), score))
-                  : habitData.firstWhere((x) => (x.id == habitId)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
+              // TODO: データベース処理追加する
+              (habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.where((x) => isSameDate(x.dateTime, DateTime.now())))
+                      .isEmpty // 同じuuid かつ 同じ日に登録があるか?
+                  ? habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.add(new History(DateTime.now(), score))
+                  : habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
             })
       };
 }

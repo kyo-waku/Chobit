@@ -1,65 +1,70 @@
 import 'package:flutter/material.dart';
 
-// ありとあらゆる設定情報はここにぶちこんでkey-valueで格納する。
-class Properties {
-  int lastId;
-
-  Properties(this.lastId);
-}
-
 class Habit {
-  int id;
-  String title;
-  Color color;
-  IconData icon;
-  List<History> histories;
+  String uuid; // 週間ごとにユニークなID
+  String title; // 習慣のタイトル
+  Color color; // カラー
+  IconData icon; // アイコン
+  bool archived; // アーカイブステータス (true: アーカイブ, false: 使用可能)
+  List<History> histories; // 習慣の実施記録
 
-  Habit(this.id, this.title, this.color, this.icon, this.histories);
+  Habit(this.uuid, this.title, this.color, this.icon, this.archived, this.histories);
 }
 
+// データベース登録用のデータ構造
 class HabitForSQL {
-  int id;
+  String uuid;
   String title;
   int colorhash;
   int iconcodepoint;
+  int archived; // 0: false, 1: true
 
-  HabitForSQL(this.id, this.title, this.colorhash, this.iconcodepoint);
+  HabitForSQL(this.uuid, this.title, this.colorhash, this.iconcodepoint, this.archived);
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'uuid': uuid,
       'title': title,
       'colorhash': colorhash,
       'iconcodepoint': iconcodepoint,
+      'archived': archived,
     };
   }
 }
 
+// 内部処理用からSQL登録用に切り替える
 HabitForSQL convertFromHabitToSQL(Habit habit) {
+  int arc = habit.archived ? 1 : 0;
   return new HabitForSQL(
-    habit.id,
+    habit.uuid,
     habit.title,
     habit.color.hashCode,
     habit.icon.codePoint,
+    arc,
   );
 }
 
+// SQLのデータから内部処理用に切り替える
 Habit convertFromSQLToHabit(HabitForSQL sql) {
+  bool arc = (sql.archived == 1) ? true : false;
   return new Habit(
-    sql.id,
+    sql.uuid,
     sql.title,
     Color(sql.colorhash),
     IconData(sql.iconcodepoint, fontFamily: 'MaterialIcons'),
+    arc,
     null,
   );
 }
 
+// 実施記録
 class History {
   DateTime dateTime;
   Score score;
   History(this.dateTime, this.score);
 }
 
+// スコア列
 enum Score { Nan, Excellent, Nice, Chobit, Break }
 
 // 便利関数
@@ -145,21 +150,22 @@ List<HabitIcon> getAvailableHabitIcons() {
 
 // テスト用初期値
 Habit initialHabit = new Habit(
-  1,
+  '1',
   'testBlue',
   Colors.blue[200],
   Icons.directions_run,
+  false,
   initialHistory,
 );
 List<History> initialHistory = [
   History(DateTime(2020, 9, 20, 12, 34), Score.Break),
 ];
-
 Habit initialHabit2 = new Habit(
-  2,
+  '2',
   'testGreen',
   Colors.green[200],
   Icons.directions_bike,
+  false,
   initialHistory2,
 );
 List<History> initialHistory2 = [
@@ -167,10 +173,11 @@ List<History> initialHistory2 = [
   History(DateTime(2020, 9, 22, 12, 34), Score.Break),
 ];
 Habit initialHabit3 = new Habit(
-  3,
+  '3',
   'testOrange',
   Colors.orange[200],
   Icons.directions_transit,
+  false,
   initialHistory3,
 );
 List<History> initialHistory3 = [

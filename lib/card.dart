@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'inheriteds.dart';
 import 'define.dart';
 
@@ -164,8 +165,6 @@ class _NewHabitPageState extends State<NewHabitPage> {
   @override
   Widget build(BuildContext context) {
     var addNewHabit = MyInherited.of(context, listen: true).addNewHabit;
-    var lastId = MyInherited.of(context, listen: true).props.lastId;
-    var numOfHabits = MyInherited.of(context, listen: true).habits.length;
     bool _isInvalidInputs =
         (habitNameController.text.length > 0) && (selectedIconData != Icons.help_outline) && (selectedContainerColor != Colors.blueGrey[200]);
     return (Scaffold(
@@ -205,7 +204,7 @@ class _NewHabitPageState extends State<NewHabitPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     decoration: const InputDecoration(
-                      hintText: 'Habit name',
+                      hintText: 'Habit Title',
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -242,11 +241,13 @@ class _NewHabitPageState extends State<NewHabitPage> {
                           onPressed: () {
                             if (_isInvalidInputs) {
                               addNewHabit(new Habit(
-                                  /*lastId + 1*/ numOfHabits + 1,
-                                  habitNameController.text,
-                                  selectedContainerColor,
-                                  selectedIconData,
-                                  [History(DateTime.now(), Score.Break)]));
+                                Uuid().v1(), // uuidはコンストラクタで登録する
+                                habitNameController.text,
+                                selectedContainerColor,
+                                selectedIconData,
+                                false,
+                                [History(DateTime.now(), Score.Break)],
+                              ));
                               Navigator.of(context).pop();
                             }
                           },
@@ -438,8 +439,17 @@ class _FullPageCardState extends State<FullPageCard> {
   // Score result = Score.Nan;
   Widget build(BuildContext context) {
     Habit tempHabit = MyInherited.of(context, listen: true).habits[widget.index];
-    Score result = tempHabit.histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now()), orElse: () => History(DateTime.now(), Score.Break)).score;
-
+    Score result = () {
+      if (tempHabit.histories == null) {
+        return (History(DateTime.now(), Score.Break)).score;
+      }
+      return (tempHabit.histories
+          .firstWhere(
+            (x) => isSameDate(x.dateTime, DateTime.now()),
+            orElse: () => History(DateTime.now(), Score.Break),
+          )
+          .score);
+    }();
     return Scaffold(
       body:
           // ページビューは一旦停止中
@@ -500,7 +510,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Excellent,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Excellent ? Colors.black : Colors.blueGrey,
                             ),
@@ -517,7 +527,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Nice,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Nice ? Colors.black : Colors.blueGrey,
                             ),
@@ -540,7 +550,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Chobit,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Chobit ? Colors.black : Colors.blueGrey,
                             ),
@@ -557,7 +567,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Break,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.id, result),
+                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Break ? Colors.black : Colors.blueGrey,
                             ),
