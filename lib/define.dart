@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class Habit {
-  String uuid; // 週間ごとにユニークなID
+  String uuid; // 週間ごとのユニークなID
   String title; // 習慣のタイトル
   Color color; // カラー
   IconData icon; // アイコン
@@ -28,6 +29,7 @@ class HabitForSQL {
       'colorhash': colorhash,
       'iconcodepoint': iconcodepoint,
       'archived': archived,
+      'parentuuid': 0, // 設定情報は parent_uuid = 0
     };
   }
 }
@@ -59,9 +61,54 @@ Habit convertFromSQLToHabit(HabitForSQL sql) {
 
 // 実施記録
 class History {
+  String dateStr;
   DateTime dateTime;
   Score score;
-  History(this.dateTime, this.score);
+  History(this.dateTime, this.score) {
+    dateStr = this.dateTime.year.toString() + this.dateTime.month.toString() + this.dateTime.day.toString();
+  }
+}
+
+// 実施記録 for SQL
+class HistoryForSQL {
+  String parentuuid;
+  String dateStr;
+  String dateTime;
+  int score;
+  HistoryForSQL(this.parentuuid, this.dateStr, this.dateTime, this.score);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uuid': Uuid().v1(),
+      'parentuuid': parentuuid,
+      'datestr': dateStr,
+      'datetime': dateTime,
+      'score': score,
+    };
+  }
+}
+
+// 内部処理用からSQL登録用に切り替える
+HistoryForSQL convertFromHistoryToSQL(String parentuuid, History history) {
+  String datetimestring = history.dateTime.toUtc().toIso8601String();
+  String dateStr = history.dateTime.year.toString() + history.dateTime.month.toString() + history.dateTime.day.toString();
+  int scoreint = history.score.index;
+  return new HistoryForSQL(
+    parentuuid,
+    dateStr,
+    datetimestring,
+    scoreint,
+  );
+}
+
+// SQLのデータから内部処理用に切り替える
+History convertFromSQLToHistory(HistoryForSQL sql) {
+  DateTime dateTime = DateTime.parse(sql.dateTime).toLocal();
+  Score score = Score.values[sql.score];
+  return new History(
+    dateTime,
+    score,
+  );
 }
 
 // スコア列
@@ -147,41 +194,3 @@ List<HabitIcon> getAvailableHabitIcons() {
 
   return habitIcons;
 }
-
-// テスト用初期値
-Habit initialHabit = new Habit(
-  '1',
-  'testBlue',
-  Colors.blue[200],
-  Icons.directions_run,
-  false,
-  initialHistory,
-);
-List<History> initialHistory = [
-  History(DateTime(2020, 9, 20, 12, 34), Score.Break),
-];
-Habit initialHabit2 = new Habit(
-  '2',
-  'testGreen',
-  Colors.green[200],
-  Icons.directions_bike,
-  false,
-  initialHistory2,
-);
-List<History> initialHistory2 = [
-  History(DateTime(2020, 9, 20, 12, 34), Score.Break),
-  History(DateTime(2020, 9, 22, 12, 34), Score.Break),
-];
-Habit initialHabit3 = new Habit(
-  '3',
-  'testOrange',
-  Colors.orange[200],
-  Icons.directions_transit,
-  false,
-  initialHistory3,
-);
-List<History> initialHistory3 = [
-  History(DateTime(2020, 9, 20, 12, 34), Score.Break),
-  History(DateTime(2020, 9, 23, 12, 34), Score.Break),
-  History(DateTime(2020, 9, 24, 12, 34), Score.Break),
-];

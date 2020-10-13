@@ -388,15 +388,18 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                   ),
                   SizedBox(height: 30),
                   for (var i = 0; tempHabit.histories != null && i < tempHabit.histories.length && i < maxRecents; i++)
-                    (tempHabit.histories != null)
-                        ? Text(
+                    (() {
+                      if (tempHabit.histories != null) {
+                        return Text(
                             '${DateTime.now().difference(tempHabit.histories[tempHabit.histories.length - i - 1].dateTime).inDays}' +
                                 'days ago' +
                                 ': ' +
                                 '${tempHabit.histories[tempHabit.histories.length - i - 1].score.toString().split('.')[1]}',
-                            style: TextStyle(fontSize: 14),
-                          )
-                        : Container()
+                            style: TextStyle(fontSize: 14));
+                      } else {
+                        return Container();
+                      }
+                    })(),
                 ],
               ),
             ),
@@ -510,7 +513,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Excellent,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
+                                    MyInherited.of(context, listen: true).newHistory(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Excellent ? Colors.black : Colors.blueGrey,
                             ),
@@ -527,7 +530,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Nice,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
+                                    MyInherited.of(context, listen: true).newHistory(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Nice ? Colors.black : Colors.blueGrey,
                             ),
@@ -550,7 +553,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Chobit,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
+                                    MyInherited.of(context, listen: true).newHistory(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Chobit ? Colors.black : Colors.blueGrey,
                             ),
@@ -567,7 +570,7 @@ class _FullPageCardState extends State<FullPageCard> {
                               iconSize: 50,
                               onPressed: () => setState(() => {
                                     result = Score.Break,
-                                    MyInherited.of(context, listen: true).newRecord(tempHabit.uuid, result),
+                                    MyInherited.of(context, listen: true).newHistory(tempHabit.uuid, result),
                                   }),
                               color: result == Score.Break ? Colors.black : Colors.blueGrey,
                             ),

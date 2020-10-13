@@ -35,38 +35,69 @@ class MyInheritedState extends State<MyInherited> {
 
   List<Habit> get habits {
     if (habitData.isEmpty) {
-      makeInitHabit();
+      initializeHabitFromDB();
     }
     return habitData;
   }
 
-  void callAsyncInsert(Habit habit) async {
-    await insertHabit(habit);
-  }
-
-  Future<void> makeInitHabit() async {
+  // アプリ起動時のデータベース読み込み
+  Future<void> initializeHabitFromDB() async {
     getHabits().then((List<Habit> hbs) {
-      setState(() => habitData.addAll(hbs));
+      for (var habit in hbs) {
+        if (habit.histories == null) {
+          getHistory(habit.uuid).then((List<History> histories) {
+            habit.histories = histories;
+          });
+        }
+      }
+      setState(() => habitData = hbs);
     });
   }
 
-  // テスト用初期値
+  Future<void> initializeHistoryFromDB(String parentuuid, Habit habit) async {
+    getHistory(parentuuid).then((List<History> histories) {
+      setState(() => habit.histories.addAll(histories));
+    });
+  }
+
+  // 習慣の新規登録
   void addNewHabit(Habit newHabit) => {
-        callAsyncInsert(newHabit),
+        callAsyncInsertHabit(newHabit),
         setState(
           () => habitData.add(newHabit),
         ),
       };
 
-  void newRecord(String habitUuid, Score score) => {
+  void callAsyncInsertHabit(Habit habit) async {
+    await insertHabit(habit);
+    await insertHistory(habit.uuid, habit.histories.first);
+  }
+
+  // 実施記録
+  void newHistory(String habitUuid, Score score) => {
         setState(() => {
-              // TODO: データベース処理追加する
-              (habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.where((x) => isSameDate(x.dateTime, DateTime.now())))
-                      .isEmpty // 同じuuid かつ 同じ日に登録があるか?
-                  ? habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.add(new History(DateTime.now(), score))
-                  : habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
+              if (habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.where((x) => isSameDate(x.dateTime, DateTime.now())).isEmpty)
+                {
+                  habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.add(new History(DateTime.now(), score)),
+                  callAsyncInsertHistory(habitUuid, score),
+                }
+              else
+                {
+                  habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score,
+                  callAsyncUpdateHistory(habitUuid, score),
+                }
             })
       };
+
+  void callAsyncInsertHistory(String habitUuid, Score score) async {
+    History history = new History(DateTime.now(), score);
+    await insertHistory(habitUuid, history);
+  }
+
+  void callAsyncUpdateHistory(String habitUuid, Score score) async {
+    History history = new History(DateTime.now(), score);
+    await updateHistory(habitUuid, history);
+  }
 }
 
 class _Inherited extends InheritedWidget {
