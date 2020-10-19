@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class Habit {
-  String uuid; // 週間ごとのユニークなID
+  String uuid; // 習慣ごとのユニークなID
   String title; // 習慣のタイトル
   Color color; // カラー
   IconData icon; // アイコン

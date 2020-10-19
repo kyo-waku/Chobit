@@ -36,14 +36,14 @@ class _CardWidgetState extends State<CardWidget> {
               onPressed: _onCardViewModeTapped,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              '${dateTimeFormatter(new DateTime.now())}',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(8.0),
+          //   child: Text(
+          //     '${dateTimeFormatter(new DateTime.now())}',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          //   ),
+          // ),
           _currentCardView,
         ],
       ),
@@ -62,14 +62,14 @@ class _SwipableCardState extends State<SwipableCardWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double scrollViewHeight = size.height * 0.7;
+    double scrollViewHeight = size.height * 0.8;
     var numOfHabit = MyInherited.of(context, listen: true).habits.length;
     return (Center(
       child: SizedBox(
         height: scrollViewHeight, // card height
         child: PageView.builder(
           itemCount: numOfHabit + 1, // +1 is for adding page
-          controller: PageController(viewportFraction: 0.8),
+          controller: PageController(viewportFraction: 0.9),
           onPageChanged: (int index) => setState(() => {
                 _index = index,
               }),
@@ -90,7 +90,7 @@ class AddHabitRect extends StatelessWidget {
   Widget build(BuildContext context) {
     return (Card(
       color: Colors.blueGrey[100],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       child: Center(
         child: IconButton(
           icon: Icon(Icons.add_circle_outline),
@@ -354,7 +354,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
       },
       child: Card(
         color: tempHabit.color, //Colors.blue[200],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: <Widget>[
             Spacer(flex: 1),
@@ -395,7 +395,7 @@ class _CardHistoryModeState extends State<CardHistoryMode> {
                                 'days ago' +
                                 ': ' +
                                 '${tempHabit.histories[tempHabit.histories.length - i - 1].score.toString().split('.')[1]}',
-                            style: TextStyle(fontSize: 14));
+                            style: TextStyle(fontSize: 20));
                       } else {
                         return Container();
                       }
@@ -473,19 +473,22 @@ class _FullPageCardState extends State<FullPageCard> {
                   bottomRight: const Radius.elliptical(210, 90),
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.5,
-                    child: Icon(
-                      tempHabit.icon,
-                      color: Colors.blueGrey,
-                      size: 120.0,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Opacity(
+                      opacity: 0.5,
+                      child: Icon(
+                        tempHabit.icon,
+                        color: Colors.blueGrey,
+                        size: 120.0,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Center(
