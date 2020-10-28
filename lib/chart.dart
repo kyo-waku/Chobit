@@ -3,62 +3,80 @@ import 'package:heatmap_calendar/heatmap_calendar.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 
-class ChartWidget extends StatelessWidget {
+class ChartWidget extends StatefulWidget {
+  @override
+  _OverViewState createState() => _OverViewState();
+}
+
+class _OverViewState extends State<ChartWidget> {
+  List<bool> isSelected;
+
+  @override
+  void initState() {
+    isSelected = [true, false];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return (SafeArea(
         child: Center(
             child: Column(
       children: [
-        //1
-        Text('Recent Actions'),
-        //2 ToDo:カレンダーの表示状態を固定したい。
-        // HeatMapCalendar(
-        //   input: {
-        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 6))): 5,
-        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 5))):
-        //         55,
-        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 4))):
-        //         14,
-        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
-        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))):
-        //         35,
-        //     TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))):
-        //         14,
-        //     TimeUtils.removeTime(DateTime.now()): 5,
-        //   },
-        //   colorThresholds: {
-        //     1: Colors.green[100],
-        //     10: Colors.green[300],
-        //     30: Colors.green[500]
-        //   },
-        //   weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-        //   monthsLabels: [
-        //     "",
-        //     "Jan",
-        //     "Feb",
-        //     "Mar",
-        //     "Apr",
-        //     "May",
-        //     "Jun",
-        //     "Jul",
-        //     "Aug",
-        //     "Sep",
-        //     "Oct",
-        //     "Nov",
-        //     "Dec",
-        //   ],
-        //   squareSize: 20.0,
-        //   textOpacity: 0.3,
-        //   labelTextColor: Colors.blueGrey,
-        //   dayTextColor: Colors.blue[500],
-        // ),
-
-        //2-1
-        Center(
+        //Switching the data display
+        ConstrainedBox(
+          constraints: BoxConstraints.expand(height: 35),
           child: Container(
-            width: 500,
-            height: 250,
+            color: Color(0xFF404a59),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                //ToDo:切替の仕組みを作る。
+                ToggleButtons(
+                  borderColor: Colors.black,
+                  fillColor: Color(0xFF32C5E9),
+                  borderWidth: 2,
+                  selectedBorderColor: Colors.black,
+                  selectedColor: Colors.white,
+                  borderRadius: BorderRadius.circular(0),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '4 months',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Year',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int i = 0; i < isSelected.length; i++) {
+                        if (i == index) {
+                          isSelected[i] = true;
+                        } else {
+                          isSelected[i] = false;
+                        }
+                      }
+                    });
+                  },
+                  isSelected: isSelected,
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        //A year Data
+        ConstrainedBox(
+          constraints: BoxConstraints.expand(height: 250),
+          child: Container(
             child: Echarts(
               extraScript: '''
               var data = getVirtulData(2020);
@@ -224,13 +242,11 @@ class ChartWidget extends StatelessWidget {
           ),
         ),
 
-        //3
-        Center(
+        //Week Data
+        ConstrainedBox(
+          constraints: BoxConstraints.expand(height: 300),
           child: Container(
             child: Echarts(
-              // extraScript: '''
-              // var chart = echarts.init(dom, 'light');
-              // ''',
               option: '''
                     {
                       backgroundColor: '#404a59',
@@ -277,8 +293,6 @@ class ChartWidget extends StatelessWidget {
                     }
                   ''',
             ),
-            width: 400,
-            height: 300,
           ),
         ),
       ], //Column children
