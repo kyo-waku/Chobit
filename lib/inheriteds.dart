@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'define.dart';
+import 'datastore.dart';
 
 // Inherited
 class MyInherited extends StatefulWidget {
@@ -30,41 +31,73 @@ class MyInheritedState extends State<MyInherited> {
     );
   }
 
-  List<Habit> habit = new List<Habit>();
+  List<Habit> habitData = new List<Habit>();
 
   List<Habit> get habits {
-    if (habit.isEmpty) {
-      habit = makeInit();
+    if (habitData.isEmpty) {
+      initializeHabitFromDB();
     }
-    return habit;
+    return habitData;
   }
 
-  int get numOfHabit {
-    if (habit.isEmpty) {
-      habit = makeInit();
-    }
-    return habit.length;
+  // アプリ起動時のデータベース読み込み
+  Future<void> initializeHabitFromDB() async {
+    getHabits().then((List<Habit> hbs) {
+      for (var habit in hbs) {
+        if (habit.histories == null) {
+          getHistory(habit.uuid).then((List<History> histories) {
+            habit.histories = histories;
+          });
+        }
+      }
+      setState(() => habitData = hbs);
+    });
   }
 
-  void addNewHabit(Habit newHabit) => setState(() => habit.add(newHabit));
+  Future<void> initializeHistoryFromDB(String parentuuid, Habit habit) async {
+    getHistory(parentuuid).then((List<History> histories) {
+      setState(() => habit.histories.addAll(histories));
+    });
+  }
 
-  void newRecord(String habitTitle, Score score) => {
-        // 一旦タイトルで一致させているが、UUIDかなんかに変える予定
+  // 習慣の新規登録
+  void addNewHabit(Habit newHabit) => {
+        callAsyncInsertHabit(newHabit),
+        setState(
+          () => habitData.add(newHabit),
+        ),
+      };
+
+  void callAsyncInsertHabit(Habit habit) async {
+    await insertHabit(habit);
+    await insertHistory(habit.uuid, habit.histories.first);
+  }
+
+  // 実施記録
+  void newHistory(String habitUuid, Score score) => {
         setState(() => {
-              (habit.firstWhere((x) => (x.title == habitTitle)).histories.where((x) => isSameDate(x.dateTime, DateTime.now()))).isEmpty
-                  ? habit.firstWhere((x) => (x.title == habitTitle)).histories.add(new History(DateTime.now(), score))
-                  : habit.firstWhere((x) => (x.title == habitTitle)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score
+              if (habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.where((x) => isSameDate(x.dateTime, DateTime.now())).isEmpty)
+                {
+                  habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.add(new History(DateTime.now(), score)),
+                  callAsyncInsertHistory(habitUuid, score),
+                }
+              else
+                {
+                  habitData.firstWhere((x) => (x.uuid == habitUuid)).histories.firstWhere((x) => isSameDate(x.dateTime, DateTime.now())).score = score,
+                  callAsyncUpdateHistory(habitUuid, score),
+                }
             })
       };
-}
 
-// テスト用初期値
-List<Habit> makeInit() {
-  List<Habit> hb = new List<Habit>();
-  hb.add(initialHabit);
-  hb.add(initialHabit2);
-  hb.add(initialHabit3);
-  return hb;
+  void callAsyncInsertHistory(String habitUuid, Score score) async {
+    History history = new History(DateTime.now(), score);
+    await insertHistory(habitUuid, history);
+  }
+
+  void callAsyncUpdateHistory(String habitUuid, Score score) async {
+    History history = new History(DateTime.now(), score);
+    await updateHistory(habitUuid, history);
+  }
 }
 
 class _Inherited extends InheritedWidget {
