@@ -4,34 +4,131 @@ import 'package:flutter/material.dart';
 //hack:下のSettingsItemNameリストと同時に更新する
 enum SettingsItem {
   CardInfo,
+  CardA,
+  CardB,
+  CardC,
+
   StartWeek,
+  Sunday,
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+
   Notification,
-  DarkMode,
-  HomeIcon,
-  FontSize,
-  Language,
-  FutureSchedule,
-  Introduction,
-  Opinion,
-  Donation,
+  NotificationOnOff,
+  NotificationOnOffBadge,
+  NotificationTime,
+
   TrashCan,
+  TrashCardA,
+  TrashCardB,
+  TrashCardC,
+
+  DarkMode,
+  DarkModeOnOff,
+  DarkModeStartTime,
+  DarkModeEndTime,
+
+  AppIcon,
+  AppIconA,
+  AppIconB,
+  AppIconC,
+
+  FontSize,
+  FontSizeLarge,
+  FontSizeMedium,
+  FontSizeSmall,
+
+  Language,
+  Japanese,
+  English,
+
+  ReviewThisApp,
+  ReviewByAppleStore,
+  ReviewByGooglePlay,
+
+  Introduction,
+  IntroduceByTwitter,
+  IntroduceByLINE,
+  IntroduceByCopyLink,
+
+  Inquiry,
+  InquiryByTwetter,
+  InquiryByMail,
+
+  Donation,
+  DonationExplanation,
+
+  Help,
+  HelpExplanation,
+
+  TermsOfService,
+  TermsExplanation,
+
+  PrivacyPoricy,
+  PoricyExplanation,
+
   Other,
 }
 
 //hack:上のSettingsItemのenumと同時に更新する
 const List<String> SettingsItemName = [
   "カード情報",
+  "カードA",
+  "カードB",
+  "カードC",
   "週の始まり",
+  "日曜日",
+  "月曜日",
+  "火曜日",
+  "水曜日",
+  "木曜日",
+  "金曜日",
+  "土曜日",
   "通知",
-  "ダークモード",
-  "ホーム画面のアイコン",
-  "フォントサイズ",
-  "言語",
-  "今後の予定",
-  "紹介",
-  "ご意見",
-  "寄付",
+  "通知する",
+  "バッジで通知する",
+  "通知時間",
   "ごみ箱",
+  "カードA",
+  "カードB",
+  "カードC",
+  "ダークモード",
+  "ダークモードにする",
+  "ダークモード開始時間",
+  "ダークモード終了時間",
+  "アプリのアイコン",
+  "アイコンA",
+  "アイコンB",
+  "アイコンC",
+  "フォントサイズ",
+  "大",
+  "中",
+  "小",
+  "言語",
+  "日本語",
+  "英語",
+  "このアプリをレビューする",
+  "AppleStoreでレビューする",
+  "GooglePlayでレビューする",
+  "紹介",
+  "Twitterで紹介する",
+  "LINEで紹介する",
+  "リンクをコピーする",
+  "お問い合わせ",
+  "Twitterで問い合わせる",
+  "メールで問い合わせる",
+  "寄付",
+  "(寄付の説明文)",
+  "ヘルプ",
+  "(ヘルプの説明文)",
+  "利用規約",
+  "(利用規約の説明文)",
+  "プライバシーポリシー",
+  "(プライバシーポリシーの説明文)",
   "その他",
 ];
 
@@ -45,21 +142,36 @@ class SettingsWidget extends StatelessWidget {
       body: ListView(padding: const EdgeInsets.all(8), children: [
         //todo:各項目の名称を変数化する
 
-        MenuItem(SettingsItem.CardInfo, Icon(Icons.credit_card), context,
+        MenuItem(SettingsItem.CardInfo, context, Icon(Icons.credit_card),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.StartWeek, Icon(Icons.calendar_today), context,
+        MenuItem(SettingsItem.StartWeek, context, Icon(Icons.calendar_today),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Notification, Icon(Icons.alarm), context,
+        MenuItem(SettingsItem.Notification, context, Icon(Icons.alarm),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.DarkMode, Icon(Icons.brightness_4), context),
-        MenuItem(SettingsItem.HomeIcon, Icon(Icons.phone_iphone), context),
-        MenuItem(SettingsItem.FontSize, Icon(Icons.format_size), context),
-        MenuItem(SettingsItem.Language, Icon(Icons.g_translate), context),
-        MenuItem(SettingsItem.FutureSchedule, Icon(Icons.watch), context),
-        MenuItem(SettingsItem.Introduction, Icon(Icons.chat), context),
-        MenuItem(SettingsItem.Opinion, Icon(Icons.contact_mail), context),
-        MenuItem(SettingsItem.Donation, Icon(Icons.attach_money), context),
-        MenuItem(SettingsItem.TrashCan, Icon(Icons.delete), context),
+        MenuItem(SettingsItem.TrashCan, context, Icon(Icons.delete),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.DarkMode, context, Icon(Icons.brightness_4),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.AppIcon, context, Icon(Icons.phone_iphone),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.FontSize, context, Icon(Icons.format_size),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.Language, context, Icon(Icons.g_translate),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.ReviewThisApp, context,
+            Icon(Icons.insert_emoticon), Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.Introduction, context, Icon(Icons.chat),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.Inquiry, context, Icon(Icons.contact_mail),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.Donation, context, Icon(Icons.attach_money),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.Help, context, Icon(Icons.help),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.TermsOfService, context, Icon(Icons.rule),
+            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.PrivacyPoricy, context, Icon(Icons.privacy_tip),
+            Icon(Icons.arrow_forward_ios)),
       ]),
     );
   }
@@ -74,10 +186,9 @@ class SettingsCardInfo extends StatelessWidget {
         title: Text(SettingsItemName[SettingsItem.CardInfo.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.CardInfo, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.CardA, context),
+        MenuItem(SettingsItem.CardB, context),
+        MenuItem(SettingsItem.CardC, context),
       ]),
     );
   }
@@ -91,10 +202,13 @@ class SettingsStartWeek extends StatelessWidget {
         title: Text(SettingsItemName[SettingsItem.StartWeek.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.StartWeek, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.Sunday, context),
+        MenuItem(SettingsItem.Monday, context),
+        MenuItem(SettingsItem.Tuesday, context),
+        MenuItem(SettingsItem.Wednesday, context),
+        MenuItem(SettingsItem.Thursday, context),
+        MenuItem(SettingsItem.Friday, context),
+        MenuItem(SettingsItem.Saturday, context),
       ]),
     );
   }
@@ -108,146 +222,9 @@ class SettingsNotification extends StatelessWidget {
         title: Text(SettingsItemName[SettingsItem.Notification.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Notification, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsDarkMode extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.DarkMode.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.DarkMode, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsHomeIcon extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.HomeIcon.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.HomeIcon, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsFontSize extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.FontSize.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.FontSize, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsLanguage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Language.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Language, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsFutureSchedule extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.FutureSchedule.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.FutureSchedule, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsIntroduction extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Introduction.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Introduction, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsOpinion extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Opinion.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Opinion, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
-      ]),
-    );
-  }
-}
-
-class SettingsDonation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Donation.index]),
-      ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Donation, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.NotificationOnOff, context),
+        MenuItem(SettingsItem.NotificationOnOffBadge, context),
+        MenuItem(SettingsItem.NotificationTime, context),
       ]),
     );
   }
@@ -261,18 +238,184 @@ class SettingsTrashCan extends StatelessWidget {
         title: Text(SettingsItemName[SettingsItem.TrashCan.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.TrashCan, Icon(Icons.credit_card), context,
-            Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Other, Icon(Icons.calendar_today), context,
-            Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsItem.TrashCardA, context),
+        MenuItem(SettingsItem.TrashCardB, context),
+        MenuItem(SettingsItem.TrashCardC, context),
+      ]),
+    );
+  }
+}
+
+class SettingsDarkMode extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.DarkMode.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.DarkModeOnOff, context),
+        MenuItem(SettingsItem.DarkModeStartTime, context),
+        MenuItem(SettingsItem.DarkModeEndTime, context),
+      ]),
+    );
+  }
+}
+
+class SettingsAppIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.AppIcon.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.AppIconA, context),
+        MenuItem(SettingsItem.AppIconB, context),
+        MenuItem(SettingsItem.AppIconC, context),
+      ]),
+    );
+  }
+}
+
+class SettingsFontSize extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.FontSize.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.FontSizeLarge, context),
+        MenuItem(SettingsItem.FontSizeMedium, context),
+        MenuItem(SettingsItem.FontSizeSmall, context),
+      ]),
+    );
+  }
+}
+
+class SettingsLanguage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.Language.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.Japanese, context),
+        MenuItem(SettingsItem.English, context),
+      ]),
+    );
+  }
+}
+
+class SettingsReviewThisApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.ReviewThisApp.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.ReviewByAppleStore, context),
+        MenuItem(SettingsItem.ReviewByGooglePlay, context),
+      ]),
+    );
+  }
+}
+
+class SettingsIntroduction extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.Introduction.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.IntroduceByTwitter, context),
+        MenuItem(SettingsItem.IntroduceByLINE, context),
+        MenuItem(SettingsItem.IntroduceByCopyLink, context),
+      ]),
+    );
+  }
+}
+
+class SettingsInquiry extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.Inquiry.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.InquiryByTwetter, context),
+        MenuItem(SettingsItem.InquiryByMail, context),
+      ]),
+    );
+  }
+}
+
+class SettingsDonation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.Donation.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.DonationExplanation, context),
+      ]),
+    );
+  }
+}
+
+class SettingsHelp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.Help.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.HelpExplanation, context),
+      ]),
+    );
+  }
+}
+
+class SettingsTermsOfService extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.TermsOfService.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.TermsExplanation, context),
+      ]),
+    );
+  }
+}
+
+class SettingsPrivacyPolicy extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItemName[SettingsItem.PrivacyPoricy.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        MenuItem(SettingsItem.PoricyExplanation, context),
       ]),
     );
   }
 }
 
 class MenuItem extends StatelessWidget {
-  MenuItem(this.settingsItem, this.leadingIcon, this.context,
-      [this.trailingIcon]);
+//  MenuItem(this.settingsItem, this.leadingIcon, this.context,
+//      [this.trailingIcon]);
+  MenuItem(this.settingsItem, this.context,
+      [this.leadingIcon, this.trailingIcon]);
 
   final SettingsItem settingsItem;
   final Icon leadingIcon;
@@ -321,6 +464,13 @@ class MenuItem extends StatelessWidget {
                     builder: (context) => SettingsNotification(),
                   ));
               break;
+            case SettingsItem.TrashCan:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsTrashCan(),
+                  ));
+              break;
             case SettingsItem.DarkMode:
               Navigator.push(
                   context,
@@ -328,11 +478,11 @@ class MenuItem extends StatelessWidget {
                     builder: (context) => SettingsDarkMode(),
                   ));
               break;
-            case SettingsItem.HomeIcon:
+            case SettingsItem.AppIcon:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsHomeIcon(),
+                    builder: (context) => SettingsAppIcon(),
                   ));
               break;
             case SettingsItem.FontSize:
@@ -349,11 +499,11 @@ class MenuItem extends StatelessWidget {
                     builder: (context) => SettingsLanguage(),
                   ));
               break;
-            case SettingsItem.FutureSchedule:
+            case SettingsItem.ReviewThisApp:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsFutureSchedule(),
+                    builder: (context) => SettingsReviewThisApp(),
                   ));
               break;
             case SettingsItem.Introduction:
@@ -363,11 +513,11 @@ class MenuItem extends StatelessWidget {
                     builder: (context) => SettingsIntroduction(),
                   ));
               break;
-            case SettingsItem.Opinion:
+            case SettingsItem.Inquiry:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsOpinion(),
+                    builder: (context) => SettingsInquiry(),
                   ));
               break;
             case SettingsItem.Donation:
@@ -377,20 +527,31 @@ class MenuItem extends StatelessWidget {
                     builder: (context) => SettingsDonation(),
                   ));
               break;
-            case SettingsItem.TrashCan:
+            case SettingsItem.Help:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsTrashCan(),
+                    builder: (context) => SettingsHelp(),
                   ));
               break;
-            default:
-              //最終版では、エラー処理にする
+            case SettingsItem.TermsOfService:
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsWidget(),
+                    builder: (context) => SettingsTermsOfService(),
                   ));
+              break;
+            case SettingsItem.PrivacyPoricy:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPrivacyPolicy(),
+                  ));
+              break;
+
+            default:
+              //最終版では、エラー処理にする
+              print("onTap $settingsItem");
           }
         },
         onLongPress: () {
