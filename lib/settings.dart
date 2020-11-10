@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//hack:下のSettingsItemNameリストと同時に更新する
-enum SettingsItem {
+//hack:下のSettingsItemと同時に更新する
+enum SettingsKey {
   CardInfo,
   CardA,
   CardB,
@@ -74,64 +74,67 @@ enum SettingsItem {
   Other,
 }
 
-//hack:上のSettingsItemのenumと同時に更新する
-const List<String> SettingsItemName = [
-  "カード情報",
-  "カードA",
-  "カードB",
-  "カードC",
-  "週の始まり",
-  "日曜日",
-  "月曜日",
-  "火曜日",
-  "水曜日",
-  "木曜日",
-  "金曜日",
-  "土曜日",
-  "通知",
-  "通知する",
-  "バッジで通知する",
-  "通知時間",
-  "ごみ箱",
-  "カードA",
-  "カードB",
-  "カードC",
-  "ダークモード",
-  "ダークモードにする",
-  "ダークモード開始時間",
-  "ダークモード終了時間",
-  "アプリのアイコン",
-  "アイコンA",
-  "アイコンB",
-  "アイコンC",
-  "フォントサイズ",
-  "大",
-  "中",
-  "小",
-  "言語",
-  "日本語",
-  "英語",
-  "このアプリをレビューする",
-  "AppleStoreでレビューする",
-  "GooglePlayでレビューする",
-  "紹介",
-  "Twitterで紹介する",
-  "LINEで紹介する",
-  "リンクをコピーする",
-  "お問い合わせ",
-  "Twitterで問い合わせる",
-  "メールで問い合わせる",
-  "寄付",
-  "(寄付の説明文)",
-  "ヘルプ",
-  "(ヘルプの説明文)",
-  "利用規約",
-  "(利用規約の説明文)",
-  "プライバシーポリシー",
-  "(プライバシーポリシーの説明文)",
-  "その他",
-];
+//hack:上のSettingsKeyと同時に更新する
+class SettingsItem {
+  static Map name = {
+    SettingsKey.CardInfo.index: 'カード情報',
+    SettingsKey.CardA.index: 'カードA',
+    SettingsKey.CardB.index: 'カードB',
+    SettingsKey.CardC.index: 'カードC',
+    SettingsKey.StartWeek.index: '週の始まり',
+    SettingsKey.Sunday.index: '日曜日',
+    SettingsKey.Monday.index: '月曜日',
+    SettingsKey.Tuesday.index: '火曜日',
+    SettingsKey.Wednesday.index: '水曜日',
+    SettingsKey.Thursday.index: '木曜日',
+    SettingsKey.Friday.index: '金曜日',
+    SettingsKey.Saturday.index: '土曜日',
+    SettingsKey.Notification.index: '通知',
+    SettingsKey.NotificationOnOff.index: '通知する',
+    SettingsKey.NotificationOnOffBadge.index: 'バッジで通知する',
+    SettingsKey.NotificationTime.index: '通知時間',
+    SettingsKey.TrashCan.index: 'ごみ箱',
+    SettingsKey.TrashCardA.index: 'カードA',
+    SettingsKey.TrashCardB.index: 'カードB',
+    SettingsKey.TrashCardC.index: 'カードC',
+    SettingsKey.DarkMode.index: 'ダークモード',
+    SettingsKey.DarkModeOnOff.index: 'ダークモードにする',
+    SettingsKey.DarkModeStartTime.index: 'ダークモード開始時間',
+    SettingsKey.DarkModeEndTime.index: 'ダークモード終了時間',
+    SettingsKey.AppIcon.index: 'アプリのアイコン',
+    SettingsKey.AppIconA.index: 'アイコンA',
+    SettingsKey.AppIconB.index: 'アイコンB',
+    SettingsKey.AppIconC.index: 'アイコンC',
+    SettingsKey.FontSize.index: 'フォントサイズ',
+    SettingsKey.FontSizeLarge.index: '大',
+    SettingsKey.FontSizeMedium.index: '中',
+    SettingsKey.FontSizeSmall.index: '小',
+    SettingsKey.Language.index: '言語',
+    SettingsKey.Japanese.index: '日本語',
+    SettingsKey.English.index: '英語',
+    SettingsKey.ReviewThisApp.index: 'このアプリをレビューする',
+    SettingsKey.ReviewByAppleStore.index: 'AppleStoreでレビューする',
+    SettingsKey.ReviewByGooglePlay.index: 'GooglePlayでレビューする',
+    SettingsKey.Introduction.index: '紹介',
+    SettingsKey.IntroduceByTwitter.index: 'Twitterで紹介する',
+    SettingsKey.IntroduceByLINE.index: 'LINEで紹介する',
+    SettingsKey.IntroduceByCopyLink.index: 'リンクをコピーする',
+    SettingsKey.Inquiry.index: 'お問い合わせ',
+    SettingsKey.InquiryByTwetter.index: 'Twitterで問い合わせる',
+    SettingsKey.InquiryByMail.index: 'メールで問い合わせる',
+    SettingsKey.Donation.index: '寄付',
+    SettingsKey.DonationExplanation.index: '(寄付の説明文)',
+    SettingsKey.Help.index: 'ヘルプ',
+    SettingsKey.HelpExplanation.index: '(ヘルプの説明文)',
+    SettingsKey.TermsOfService.index: '利用規約',
+    SettingsKey.TermsExplanation.index: '(利用規約の説明文)',
+    SettingsKey.PrivacyPoricy.index: 'プライバシーポリシー',
+    SettingsKey.PoricyExplanation.index: '(プライバシーポリシーの説明文)',
+    SettingsKey.Other.index: 'その他',
+  };
+}
 
+//設定の初期画面
 class SettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -140,55 +143,55 @@ class SettingsWidget extends StatelessWidget {
         title: Text('Settings'),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        //todo:各項目の名称を変数化する
-
-        MenuItem(SettingsItem.CardInfo, context, Icon(Icons.credit_card),
+        MenuItem(SettingsKey.CardInfo, context, Icon(Icons.credit_card),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.StartWeek, context, Icon(Icons.calendar_today),
+        MenuItem(SettingsKey.StartWeek, context, Icon(Icons.calendar_today),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Notification, context, Icon(Icons.alarm),
+        MenuItem(SettingsKey.Notification, context, Icon(Icons.alarm),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.TrashCan, context, Icon(Icons.delete),
+        MenuItem(SettingsKey.TrashCan, context, Icon(Icons.delete),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.DarkMode, context, Icon(Icons.brightness_4),
+        MenuItem(SettingsKey.DarkMode, context, Icon(Icons.brightness_4),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.AppIcon, context, Icon(Icons.phone_iphone),
+        MenuItem(SettingsKey.AppIcon, context, Icon(Icons.phone_iphone),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.FontSize, context, Icon(Icons.format_size),
+        MenuItem(SettingsKey.FontSize, context, Icon(Icons.format_size),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Language, context, Icon(Icons.g_translate),
+        MenuItem(SettingsKey.Language, context, Icon(Icons.g_translate),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.ReviewThisApp, context,
+        MenuItem(SettingsKey.ReviewThisApp, context,
             Icon(Icons.insert_emoticon), Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Introduction, context, Icon(Icons.chat),
+        MenuItem(SettingsKey.Introduction, context, Icon(Icons.chat),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Inquiry, context, Icon(Icons.contact_mail),
+        MenuItem(SettingsKey.Inquiry, context, Icon(Icons.contact_mail),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Donation, context, Icon(Icons.attach_money),
+        MenuItem(SettingsKey.Donation, context, Icon(Icons.attach_money),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.Help, context, Icon(Icons.help),
+        MenuItem(SettingsKey.Help, context, Icon(Icons.help),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.TermsOfService, context, Icon(Icons.rule),
+        MenuItem(SettingsKey.TermsOfService, context, Icon(Icons.rule),
             Icon(Icons.arrow_forward_ios)),
-        MenuItem(SettingsItem.PrivacyPoricy, context, Icon(Icons.privacy_tip),
+        MenuItem(SettingsKey.PrivacyPoricy, context, Icon(Icons.privacy_tip),
             Icon(Icons.arrow_forward_ios)),
       ]),
     );
   }
 }
 
-//todo:各項目の設定を決めて更新する
+//--------------------------------------------------
+//　　　　　　　　以下、設定の各画面
+//--------------------------------------------------
+
 class SettingsCardInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.CardInfo.index]),
-      ),
+      appBar:
+          AppBar(title: Text(SettingsItem.name[SettingsKey.CardInfo.index])),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.CardA, context),
-        MenuItem(SettingsItem.CardB, context),
-        MenuItem(SettingsItem.CardC, context),
+        MenuItem(SettingsKey.CardA, context),
+        MenuItem(SettingsKey.CardB, context),
+        MenuItem(SettingsKey.CardC, context),
       ]),
     );
   }
@@ -199,16 +202,16 @@ class SettingsStartWeek extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.StartWeek.index]),
+        title: Text(SettingsItem.name[SettingsKey.StartWeek.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Sunday, context),
-        MenuItem(SettingsItem.Monday, context),
-        MenuItem(SettingsItem.Tuesday, context),
-        MenuItem(SettingsItem.Wednesday, context),
-        MenuItem(SettingsItem.Thursday, context),
-        MenuItem(SettingsItem.Friday, context),
-        MenuItem(SettingsItem.Saturday, context),
+        MenuItem(SettingsKey.Sunday, context),
+        MenuItem(SettingsKey.Monday, context),
+        MenuItem(SettingsKey.Tuesday, context),
+        MenuItem(SettingsKey.Wednesday, context),
+        MenuItem(SettingsKey.Thursday, context),
+        MenuItem(SettingsKey.Friday, context),
+        MenuItem(SettingsKey.Saturday, context),
       ]),
     );
   }
@@ -219,12 +222,12 @@ class SettingsNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Notification.index]),
+        title: Text(SettingsItem.name[SettingsKey.Notification.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.NotificationOnOff, context),
-        MenuItem(SettingsItem.NotificationOnOffBadge, context),
-        MenuItem(SettingsItem.NotificationTime, context),
+        MenuItem(SettingsKey.NotificationOnOff, context),
+        MenuItem(SettingsKey.NotificationOnOffBadge, context),
+        MenuItem(SettingsKey.NotificationTime, context),
       ]),
     );
   }
@@ -235,12 +238,12 @@ class SettingsTrashCan extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.TrashCan.index]),
+        title: Text(SettingsItem.name[SettingsKey.TrashCan.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.TrashCardA, context),
-        MenuItem(SettingsItem.TrashCardB, context),
-        MenuItem(SettingsItem.TrashCardC, context),
+        MenuItem(SettingsKey.TrashCardA, context),
+        MenuItem(SettingsKey.TrashCardB, context),
+        MenuItem(SettingsKey.TrashCardC, context),
       ]),
     );
   }
@@ -251,12 +254,12 @@ class SettingsDarkMode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.DarkMode.index]),
+        title: Text(SettingsItem.name[SettingsKey.DarkMode.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.DarkModeOnOff, context),
-        MenuItem(SettingsItem.DarkModeStartTime, context),
-        MenuItem(SettingsItem.DarkModeEndTime, context),
+        MenuItem(SettingsKey.DarkModeOnOff, context),
+        MenuItem(SettingsKey.DarkModeStartTime, context),
+        MenuItem(SettingsKey.DarkModeEndTime, context),
       ]),
     );
   }
@@ -267,12 +270,12 @@ class SettingsAppIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.AppIcon.index]),
+        title: Text(SettingsItem.name[SettingsKey.AppIcon.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.AppIconA, context),
-        MenuItem(SettingsItem.AppIconB, context),
-        MenuItem(SettingsItem.AppIconC, context),
+        MenuItem(SettingsKey.AppIconA, context),
+        MenuItem(SettingsKey.AppIconB, context),
+        MenuItem(SettingsKey.AppIconC, context),
       ]),
     );
   }
@@ -283,12 +286,12 @@ class SettingsFontSize extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.FontSize.index]),
+        title: Text(SettingsItem.name[SettingsKey.FontSize.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.FontSizeLarge, context),
-        MenuItem(SettingsItem.FontSizeMedium, context),
-        MenuItem(SettingsItem.FontSizeSmall, context),
+        MenuItem(SettingsKey.FontSizeLarge, context),
+        MenuItem(SettingsKey.FontSizeMedium, context),
+        MenuItem(SettingsKey.FontSizeSmall, context),
       ]),
     );
   }
@@ -299,11 +302,11 @@ class SettingsLanguage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Language.index]),
+        title: Text(SettingsItem.name[SettingsKey.Language.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.Japanese, context),
-        MenuItem(SettingsItem.English, context),
+        MenuItem(SettingsKey.Japanese, context),
+        MenuItem(SettingsKey.English, context),
       ]),
     );
   }
@@ -314,11 +317,11 @@ class SettingsReviewThisApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.ReviewThisApp.index]),
+        title: Text(SettingsItem.name[SettingsKey.ReviewThisApp.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.ReviewByAppleStore, context),
-        MenuItem(SettingsItem.ReviewByGooglePlay, context),
+        MenuItem(SettingsKey.ReviewByAppleStore, context),
+        MenuItem(SettingsKey.ReviewByGooglePlay, context),
       ]),
     );
   }
@@ -329,12 +332,12 @@ class SettingsIntroduction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Introduction.index]),
+        title: Text(SettingsItem.name[SettingsKey.Introduction.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.IntroduceByTwitter, context),
-        MenuItem(SettingsItem.IntroduceByLINE, context),
-        MenuItem(SettingsItem.IntroduceByCopyLink, context),
+        MenuItem(SettingsKey.IntroduceByTwitter, context),
+        MenuItem(SettingsKey.IntroduceByLINE, context),
+        MenuItem(SettingsKey.IntroduceByCopyLink, context),
       ]),
     );
   }
@@ -345,11 +348,11 @@ class SettingsInquiry extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Inquiry.index]),
+        title: Text(SettingsItem.name[SettingsKey.Inquiry.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.InquiryByTwetter, context),
-        MenuItem(SettingsItem.InquiryByMail, context),
+        MenuItem(SettingsKey.InquiryByTwetter, context),
+        MenuItem(SettingsKey.InquiryByMail, context),
       ]),
     );
   }
@@ -360,10 +363,10 @@ class SettingsDonation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Donation.index]),
+        title: Text(SettingsItem.name[SettingsKey.Donation.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.DonationExplanation, context),
+        MenuItem(SettingsKey.DonationExplanation, context),
       ]),
     );
   }
@@ -374,10 +377,10 @@ class SettingsHelp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.Help.index]),
+        title: Text(SettingsItem.name[SettingsKey.Help.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.HelpExplanation, context),
+        MenuItem(SettingsKey.HelpExplanation, context),
       ]),
     );
   }
@@ -388,10 +391,10 @@ class SettingsTermsOfService extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.TermsOfService.index]),
+        title: Text(SettingsItem.name[SettingsKey.TermsOfService.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.TermsExplanation, context),
+        MenuItem(SettingsKey.TermsExplanation, context),
       ]),
     );
   }
@@ -402,22 +405,21 @@ class SettingsPrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(SettingsItemName[SettingsItem.PrivacyPoricy.index]),
+        title: Text(SettingsItem.name[SettingsKey.PrivacyPoricy.index]),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        MenuItem(SettingsItem.PoricyExplanation, context),
+        MenuItem(SettingsKey.PoricyExplanation, context),
       ]),
     );
   }
 }
 
+//設定項目のボタンレイアウトや押下時の挙動
 class MenuItem extends StatelessWidget {
-//  MenuItem(this.settingsItem, this.leadingIcon, this.context,
-//      [this.trailingIcon]);
-  MenuItem(this.settingsItem, this.context,
+  MenuItem(this.settingsKey, this.context,
       [this.leadingIcon, this.trailingIcon]);
 
-  final SettingsItem settingsItem;
+  final SettingsKey settingsKey;
   final Icon leadingIcon;
   final BuildContext context;
   final Icon trailingIcon;
@@ -436,112 +438,113 @@ class MenuItem extends StatelessWidget {
         leading: leadingIcon,
         trailing: trailingIcon,
         title: Text(
-          SettingsItemName[settingsItem.index],
+          SettingsItem.name[settingsKey.index],
           style: TextStyle(color: Colors.black, fontSize: 12.0),
         ),
         onTap: () {
           print("onTap called.");
 
-          switch (settingsItem) {
-            case SettingsItem.CardInfo:
+          //todo:関数化した方が理解見やすい。あとで。
+          switch (settingsKey) {
+            case SettingsKey.CardInfo:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsCardInfo(),
                   ));
               break;
-            case SettingsItem.StartWeek:
+            case SettingsKey.StartWeek:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsStartWeek(),
                   ));
               break;
-            case SettingsItem.Notification:
+            case SettingsKey.Notification:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsNotification(),
                   ));
               break;
-            case SettingsItem.TrashCan:
+            case SettingsKey.TrashCan:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsTrashCan(),
                   ));
               break;
-            case SettingsItem.DarkMode:
+            case SettingsKey.DarkMode:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsDarkMode(),
                   ));
               break;
-            case SettingsItem.AppIcon:
+            case SettingsKey.AppIcon:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsAppIcon(),
                   ));
               break;
-            case SettingsItem.FontSize:
+            case SettingsKey.FontSize:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsFontSize(),
                   ));
               break;
-            case SettingsItem.Language:
+            case SettingsKey.Language:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsLanguage(),
                   ));
               break;
-            case SettingsItem.ReviewThisApp:
+            case SettingsKey.ReviewThisApp:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsReviewThisApp(),
                   ));
               break;
-            case SettingsItem.Introduction:
+            case SettingsKey.Introduction:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsIntroduction(),
                   ));
               break;
-            case SettingsItem.Inquiry:
+            case SettingsKey.Inquiry:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsInquiry(),
                   ));
               break;
-            case SettingsItem.Donation:
+            case SettingsKey.Donation:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsDonation(),
                   ));
               break;
-            case SettingsItem.Help:
+            case SettingsKey.Help:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsHelp(),
                   ));
               break;
-            case SettingsItem.TermsOfService:
+            case SettingsKey.TermsOfService:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsTermsOfService(),
                   ));
               break;
-            case SettingsItem.PrivacyPoricy:
+            case SettingsKey.PrivacyPoricy:
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -551,7 +554,7 @@ class MenuItem extends StatelessWidget {
 
             default:
               //最終版では、エラー処理にする
-              print("onTap $settingsItem");
+              print("onTap $settingsKey");
           }
         },
         onLongPress: () {
