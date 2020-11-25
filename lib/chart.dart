@@ -9,13 +9,7 @@ class ChartWidget extends StatefulWidget {
 }
 
 class _OverViewState extends State<ChartWidget> {
-  List<bool> isSelected;
-
-  @override
-  void initState() {
-    isSelected = [true, false];
-    super.initState();
-  }
+  String dropdownValue = '4months';
 
   @override
   Widget build(BuildContext context) {
@@ -24,56 +18,32 @@ class _OverViewState extends State<ChartWidget> {
             child: Column(
       children: [
         //Switching the data display
-        ConstrainedBox(
-          constraints: BoxConstraints.expand(height: 35),
-          child: Container(
-            color: Color(0xFF404a59),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                //ToDo:切替の仕組みを作る。
-                ToggleButtons(
-                  borderColor: Colors.black,
-                  fillColor: Color(0xFF32C5E9),
-                  borderWidth: 2,
-                  selectedBorderColor: Colors.black,
-                  selectedColor: Colors.white,
-                  borderRadius: BorderRadius.circular(0),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '4 months',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Year',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int i = 0; i < isSelected.length; i++) {
-                        if (i == index) {
-                          isSelected[i] = true;
-                        } else {
-                          isSelected[i] = false;
-                        }
-                      }
-                    });
-                  },
-                  isSelected: isSelected,
-                ),
-              ],
-            ),
+        // DropdownList
+        DropdownButton<String>(
+          value: dropdownValue,
+          icon: Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
           ),
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+            });
+          },
+          items: <String>['4months', '8months', 'A year']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
         ),
 
-        //A year Data
+        // A year Data
         ConstrainedBox(
           constraints: BoxConstraints.expand(height: 250),
           child: Container(
