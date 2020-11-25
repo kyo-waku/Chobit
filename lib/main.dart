@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'settings.dart';
 import 'chart.dart';
-import 'card.dart';
+// import 'pages/card.dart';
 import 'inheriteds.dart';
+import 'pages/input_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,10 +16,8 @@ class MyApp extends StatelessWidget {
     return MyInherited(
       child: MaterialApp(
         title: 'Chobit',
-        theme: ThemeData(
-          canvasColor: Color(Colors.blueGrey[50].value),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+        theme: ThemeData.light().copyWith(),
+        darkTheme: ThemeData.dark().copyWith(),
         debugShowCheckedModeBanner: false,
         home: MyHomePage(),
       ),
@@ -46,17 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
 // ページ切り替え
   static List<Widget> _bodyWidgets = [
     ChartWidget(),
-    CardWidget(),
+    InputPage(),
     SettingsWidget(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
-        child: _bodyWidgets[_selectedIndex],
-      ),
+      body: _bodyWidgets[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: const <BottomNavigationBarItem>[

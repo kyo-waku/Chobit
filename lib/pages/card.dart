@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'inheriteds.dart';
-import 'define.dart';
+import '../inheriteds.dart';
+import '../define.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({Key key}) : super(key: key);
@@ -36,14 +36,6 @@ class _CardWidgetState extends State<CardWidget> {
               onPressed: _onCardViewModeTapped,
             ),
           ),
-          // Padding(
-          //   padding: EdgeInsets.all(8.0),
-          //   child: Text(
-          //     '${dateTimeFormatter(new DateTime.now())}',
-          //     textAlign: TextAlign.center,
-          //     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          //   ),
-          // ),
           _currentCardView,
         ],
       ),
