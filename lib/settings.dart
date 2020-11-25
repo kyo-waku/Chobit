@@ -71,6 +71,8 @@ enum SettingsKey {
   PrivacyPoricy,
   PoricyExplanation,
 
+  SwitchSample,
+
   Other,
 }
 
@@ -130,6 +132,7 @@ class SettingsItem {
     SettingsKey.TermsExplanation.index: '(利用規約の説明文)',
     SettingsKey.PrivacyPoricy.index: 'プライバシーポリシー',
     SettingsKey.PoricyExplanation.index: '(プライバシーポリシーの説明文)',
+    SettingsKey.SwitchSample.index: 'スイッチサンプル',
     SettingsKey.Other.index: 'その他',
   };
 }
@@ -173,6 +176,8 @@ class SettingsWidget extends StatelessWidget {
             Icon(Icons.arrow_forward_ios)),
         MenuItem(SettingsKey.PrivacyPoricy, context, Icon(Icons.privacy_tip),
             Icon(Icons.arrow_forward_ios)),
+        MenuItem(SettingsKey.SwitchSample, context,
+            Icon(Icons.lightbulb_outline), Icon(Icons.arrow_forward_ios)),
       ]),
     );
   }
@@ -552,6 +557,15 @@ class MenuItem extends StatelessWidget {
                   ));
               break;
 
+            //todo:スイッチサンプル。あとで他に流用する。
+            case SettingsKey.SwitchSample:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsSwitchSample(),
+                  ));
+              break;
+
             default:
               //最終版では、エラー処理にする
               print("onTap $settingsKey");
@@ -561,6 +575,50 @@ class MenuItem extends StatelessWidget {
           print("onLongPress called.");
         },
       ),
+    );
+  }
+}
+
+//todo:スイッチサンプル。あとで他に流用する。
+class SettingsSwitchSample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(SettingsItem.name[SettingsKey.SwitchSample.index]),
+      ),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        SwitchMenuItem(),
+      ]),
+    );
+  }
+}
+
+//todo:スイッチサンプル。あとで他に流用する。
+class SwitchMenuItem extends StatefulWidget {
+  SwitchMenuItem({Key key}) : super(key: key);
+
+  @override
+  _SwitchMenuItemState createState() => _SwitchMenuItemState();
+}
+
+//todo:スイッチサンプル。あとで他に流用する。
+//設定項目のボタンレイアウトや押下時の挙動。スイッチありのサンプル。
+class _SwitchMenuItemState extends State<SwitchMenuItem> {
+  bool _active = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      title: Text('タイトル'),
+      subtitle: Text('サブタイトル'),
+      value: _active,
+      onChanged: (bool value) {
+        setState(() {
+          _active = value;
+        });
+      },
+      secondary: const Icon(Icons.lightbulb_outline),
     );
   }
 }
