@@ -10,6 +10,8 @@ class ChartWidget extends StatefulWidget {
 
 class _OverViewState extends State<ChartWidget> {
   String dropdownValue = '4months';
+  double _weekly_echart_height = 300;
+  double _monthly_echart_height = 180;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,19 @@ class _OverViewState extends State<ChartWidget> {
           onChanged: (String newValue) {
             setState(() {
               dropdownValue = newValue;
+              // toDo：登録値の読み込み処理の追加
+              if (dropdownValue == '4months') {
+                _weekly_echart_height = 300;
+                _monthly_echart_height = 180;
+              }
+              if (dropdownValue == '8months') {
+                _weekly_echart_height = 1;
+                _monthly_echart_height = 330;
+              }
+              if (dropdownValue == 'A year') {
+                _weekly_echart_height = 1;
+                _monthly_echart_height = 480;
+              }
             });
           },
           items: <String>['4months', '8months', 'A year']
@@ -44,11 +59,11 @@ class _OverViewState extends State<ChartWidget> {
         ),
 
         // A year Data
-        ConstrainedBox(
-          constraints: BoxConstraints.expand(height: 250),
-          child: Container(
-            child: Echarts(
-              extraScript: '''
+        AnimatedContainer(
+          height: _monthly_echart_height,
+          duration: Duration(milliseconds: 500),
+          child: Echarts(
+            extraScript: '''
               var data = getVirtulData(2020);
 
               function getVirtulData(year) {
@@ -66,7 +81,7 @@ class _OverViewState extends State<ChartWidget> {
                 return data;
               }
               ''',
-              option: '''//ToDo：期間ごとの動的な表示
+            option: '''
                     {
                       backgroundColor: '#404a59',
                       title: {
@@ -99,6 +114,7 @@ class _OverViewState extends State<ChartWidget> {
                                   type: 'solid'
                               }
                           },
+                          cellSize: 18,
                           yearLabel: {
                               formatter: '{start}  1st',
                               textStyle: {
@@ -111,9 +127,9 @@ class _OverViewState extends State<ChartWidget> {
                               borderColor: '#111'
                           }
                       }, {
-                          top: 340,
+                          top: 200,
                           left: 'center',
-                          range: ['2020-07-01', '2020-12-31'],
+                          range: ['2020-05-01', '2020-8-31'],
                           splitLine: {
                               show: true,
                               lineStyle: {
@@ -124,6 +140,54 @@ class _OverViewState extends State<ChartWidget> {
                           },
                           yearLabel: {
                               formatter: '{start}  2nd',
+                              textStyle: {
+                                  color: '#fff'
+                              }
+                          },
+                          cellSize: 18,
+                          itemStyle: {
+                              color: '#323c48',
+                              borderWidth: 1,
+                              borderColor: '#111'
+                          }
+                      }, {
+                          top: 350,
+                          left: 'center',
+                          range: ['2020-09-01', '2020-12-31'],
+                          splitLine: {
+                              show: true,
+                              lineStyle: {
+                                  color: '#000',
+                                  width: 2,
+                                  type: 'solid'
+                              }
+                          },
+                          yearLabel: {
+                              formatter: '{start}  3nd',
+                              textStyle: {
+                                  color: '#fff'
+                              }
+                          },
+                          cellSize: 18,
+                          itemStyle: {
+                              color: '#323c48',
+                              borderWidth: 1,
+                              borderColor: '#111'
+                          }
+                      },{
+                          top: 610,
+                          left: 'center',
+                          range: ['2019-01-01', '2019-04-30'],
+                          splitLine: {
+                              show: true,
+                              lineStyle: {
+                                  color: '#000',
+                                  width: 2,
+                                  type: 'solid'
+                              }
+                          },
+                          yearLabel: {
+                              formatter: '{start}  4th',
                               textStyle: {
                                   color: '#fff'
                               }
@@ -152,6 +216,19 @@ class _OverViewState extends State<ChartWidget> {
                               type: 'scatter',
                               coordinateSystem: 'calendar',
                               calendarIndex: 1,
+                              data: data,
+                              symbolSize: function (val) {
+                                  return val[1] / 500;
+                              },
+                              itemStyle: {
+                                  color: '#ddb926'
+                              }
+                          },
+                          {
+                              name: 'ActivityScore',
+                              type: 'scatter',
+                              coordinateSystem: 'calendar',
+                              calendarIndex: 2,
                               data: data,
                               symbolSize: function (val) {
                                   return val[1] / 500;
@@ -208,61 +285,60 @@ class _OverViewState extends State<ChartWidget> {
                       ]
                   }
                   ''',
-            ),
           ),
         ),
 
         //Week Data
-        ConstrainedBox(
-          constraints: BoxConstraints.expand(height: 300),
-          child: Container(
-            child: Echarts(
-              option: '''
-                    {
-                      backgroundColor: '#404a59',
-                      textStyle: {
-                              color: '#fff'
-                      },
-                      angleAxis: {
-                          type: 'category',
-                          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Stu', 'Sun']
-                      },
-                      radiusAxis: {
-                      },
-                      polar: {
-                      },
-                      series: [{
-                          type: 'bar',
-                          color: '#37A2DA', 
-                          data: [1, 2, 3, 4, 3, 5, 1],
-                          coordinateSystem: 'polar',
-                          name: 'Running',
-                          stack: 'a'
-                        }, {
-                          type: 'bar',
-                          color: '#32C5E9',
-                          data: [2, 4, 4, 1, 3, 2, 1],
-                          coordinateSystem: 'polar',
-                          name: 'Coding',
-                          stack: 'a'
-                        }, {
-                          type: 'bar',
-                          color: '#67E0E3',
-                          data: [1, 2, 3, 4, 1, 2, 5],
-                          coordinateSystem: 'polar',
-                          name: 'Reading',
-                          stack: 'a'
-                        }],
-                      legend: {
-                          show: true,
-                          data: ['Running', 'Coding', 'Reading'],
-                          textStyle: {
-                              color: '#fff'
-                          }
-                      }
+        AnimatedContainer(
+          height: _weekly_echart_height,
+          duration: Duration(milliseconds: 500),
+          color: Colors.black,
+          child: Echarts(
+            option: '''
+                  {
+                    backgroundColor: '#404a59',
+                    textStyle: {
+                            color: '#fff'
+                    },
+                    angleAxis: {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Stu', 'Sun']
+                    },
+                    radiusAxis: {
+                    },
+                    polar: {
+                    },
+                    series: [{
+                        type: 'bar',
+                        color: '#37A2DA',
+                        data: [1, 2, 3, 4, 3, 5, 1],
+                        coordinateSystem: 'polar',
+                        name: 'Running',
+                        stack: 'a'
+                      }, {
+                        type: 'bar',
+                        color: '#32C5E9',
+                        data: [2, 4, 4, 1, 3, 2, 1],
+                        coordinateSystem: 'polar',
+                        name: 'Coding',
+                        stack: 'a'
+                      }, {
+                        type: 'bar',
+                        color: '#67E0E3',
+                        data: [1, 2, 3, 4, 1, 2, 5],
+                        coordinateSystem: 'polar',
+                        name: 'Reading',
+                        stack: 'a'
+                      }],
+                    legend: {
+                        show: true,
+                        data: ['Running', 'Coding', 'Reading'],
+                        textStyle: {
+                            color: '#fff'
+                        }
                     }
-                  ''',
-            ),
+                  }
+                ''',
           ),
         ),
       ], //Column children
