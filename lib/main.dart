@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'chart.dart';
-// import 'pages/card.dart';
-import 'inheriteds.dart';
-import 'pages/input_page.dart';
+import 'view/habits_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,14 +11,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MyInherited(
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Chobit',
-        theme: ThemeData.light().copyWith(),
-        darkTheme: ThemeData.dark().copyWith(),
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
         home: MyHomePage(),
-      ),
     );
   }
 }
@@ -44,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
 // ページ切り替え
   static List<Widget> _bodyWidgets = [
     ChartWidget(),
-    InputPage(),
+    HabitsView(),
     SettingsWidget(),
   ];
 
@@ -56,15 +52,15 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.insert_chart),
+            icon: Icon(Icons.insert_chart_outlined),
             label: 'Chart',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
             label: 'Settings',
           ),
         ],

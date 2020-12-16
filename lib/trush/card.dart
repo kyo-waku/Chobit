@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import '../inheriteds.dart';
-import '../define.dart';
+import 'inheriteds.dart';
+import 'define.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({Key key}) : super(key: key);

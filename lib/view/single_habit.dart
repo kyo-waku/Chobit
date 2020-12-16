@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import '../model/habit_defs.dart';
 
-class SingleItem extends StatelessWidget {
+class SingleHabit extends StatelessWidget {
+  final Habit testHabit = new Habit('12345', 'Test Habit Title', '🐣', false);
   @override
   Widget build(BuildContext context) {
-    return (Padding(
-      padding: EdgeInsets.only(top: 16.0, bottom: 8.0, left: 16.0, right: 16.0),
-      child: Container(
+    return (Container(
         height: 120,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(10),
-        ),
+        color: Colors.white,
         child: Row(
           children: <Widget>[
             Expanded(
@@ -20,10 +17,12 @@ class SingleItem extends StatelessWidget {
                   height: 80,
                   width: 80,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(90),
+                    color: Theme.of(context).secondaryHeaderColor,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Icon(Icons.directions_run_outlined, size: 60),
+                  child: Center(
+                    child: Text(testHabit.emoji, style: TextStyle(fontSize:40)),// Icon(Icons.directions_run_outlined, size: 60),
+                  ),
                 ),
               ),
             ),
@@ -33,9 +32,10 @@ class SingleItem extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     flex: 2,
-                    child: Center(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        'Habit Title',
+                        testHabit.title,
                         style: TextStyle(
                           fontSize: Theme.of(context).textTheme.headline5.fontSize,
                         ),
@@ -71,7 +71,6 @@ class SingleItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    ));
+      ));
   }
 }
