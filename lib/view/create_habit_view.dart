@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import '../model/habit_defs.dart';
 
-class CreateHabitView extends StatelessWidget {
+class CreateHabitView extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final titleController = useTextEditingController();
+    final emojiController = useTextEditingController();
     return (Scaffold(
       appBar: AppBar(
         title: Text('New Habit'),
@@ -16,10 +20,30 @@ class CreateHabitView extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text('Title', style: TextStyle(fontSize: 20)),
-            TextField(),
+            TextFormField(
+              controller: titleController,
+              autovalidateMode: AutovalidateMode.always,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+              decoration: const InputDecoration(
+                icon: Icon(Icons.bookmark),
+                hintText: '習慣のタイトル',
+              ),
+            ),
             SizedBox(height: 50),
             Text('Emoji', style: TextStyle(fontSize: 20)),
-            TextField(),
+            TextFormField(
+              controller: emojiController,
+              autovalidateMode: AutovalidateMode.always,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+              decoration: const InputDecoration(
+                icon: Icon(Icons.bookmark),
+                hintText: '絵文字',
+              ),
+            ),
             SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -28,7 +52,9 @@ class CreateHabitView extends StatelessWidget {
                   height: 50,
                   width: 100,
                   child: RaisedButton(
-                    onPressed: Navigator.of(context).pop,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: Text('Cancel', style: TextStyle(fontSize: 16)),
                   ),
                 ),
@@ -36,7 +62,10 @@ class CreateHabitView extends StatelessWidget {
                   height: 50,
                   width: 100,
                   child: RaisedButton(
-                    onPressed: Navigator.of(context).pop,
+                    onPressed: () {
+                      final Habit testHabit = new Habit('dummy', titleController.text, emojiController.text, false);
+                      Navigator.pop(context, testHabit);
+                    },
                     child: Text('Ok', style: TextStyle(fontSize: 16)),
                   ),
                 ),
