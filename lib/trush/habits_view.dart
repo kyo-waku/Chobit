@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // View
-import './single_habit.dart';
-import './create_habit_view.dart';
+import 'single_habit.dart';
+import 'create_habit_view.dart';
 // State
 import '../model/provider/habit_provider.dart';
 import '../model/habit_defs.dart';
