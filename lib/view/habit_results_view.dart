@@ -1,240 +1,163 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
-class LightGradientBackground extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset.topLeft,
-          end: FractionalOffset.bottomRight,
-          colors: [
-            Colors.white.withOpacity(0.7),
-            Colors.red.withOpacity(0.7),
-            Colors.orange.withOpacity(0.7),
-          ],
-        ),
-      ),
-    ));
-  }
-}
-
-class GlassContainer extends StatelessWidget {
-  final double height;
+class HistoryBarGraph extends StatelessWidget {
   final double width;
-  final Widget child;
-  const GlassContainer({this.height, this.width, this.child});
+  final double height;
+  const HistoryBarGraph({this.width, this.height});
   @override
   Widget build(BuildContext context) {
-    return (Container(
-      height: height,
+    final double h = (height - 20) / 3;
+    return Column(
+      children: [
+        // Bar graphs
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(height: h * 3, width: width / 7, color: Colors.grey[500]),
+            Container(height: 0, width: width / 7, color: Colors.grey[500]),
+            Container(height: h * 2, width: width / 7, color: Colors.grey[500]),
+            Container(height: 0, width: width / 7, color: Colors.grey[500]),
+            Container(height: h, width: width / 7, color: Colors.grey[500]),
+            Container(height: h * 2, width: width / 7, color: Colors.grey[500]),
+            Container(height: h, width: width / 7, color: Colors.grey[500]),
+          ],
+        ),
+        // labels
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+            Container(alignment: Alignment.center, height: 20, width: width / 7, child: Text('M')),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class SingleItemBarGraph extends StatelessWidget {
+  final MaterialColor accentColor;
+  final String title;
+  final int score;
+  const SingleItemBarGraph({this.accentColor, this.title, this.score});
+
+  // size
+  final double singleItemHeight = 60;
+  final double titleHeight = 50;
+  final double scorePanelWidth = 100;
+
+  Widget getTitle(String title) {
+    return Container(
+      height: titleHeight,
+      child: Row(
+        children: [
+          Icon(Icons.donut_large, color: accentColor),
+          SizedBox(width: 10),
+          Text(title, style: TextStyle(fontSize: 20)),
+        ],
+      ),
+    );
+  }
+
+  Widget getScorePanel(int score) {
+    return Container(
+      width: scorePanelWidth,
+      height: singleItemHeight,
+      child: Container(
+        alignment: Alignment.bottomCenter,
+        height: singleItemHeight / 2,
+        child: Text(score.toString(), style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: accentColor)),
+      ),
+    );
+  }
+
+  Widget getBarGraphContainer(double width) {
+    return Container(
       width: width,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(16.0),
+      height: singleItemHeight,
+      child: HistoryBarGraph(width: width, height: singleItemHeight),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaWidth = MediaQuery.of(context).size.width;
+    final double sideMarginWidth = 32;
+    final mainContainerWidth = mediaWidth - scorePanelWidth - sideMarginWidth * 2;
+    return Padding(
+      padding: EdgeInsets.only(left: sideMarginWidth, right: sideMarginWidth, top: 16, bottom: 16),
+      child: Column(
+        children: [
+          getTitle(title),
+          Row(
+            children: [
+              getScorePanel(score),
+              getBarGraphContainer(mainContainerWidth),
+            ],
+          )
+        ],
       ),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: child,
-        ),
-      ),
-    ));
-  }
-}
-
-class CircularPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.green.withOpacity(0.7)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 50;
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = min(size.width, size.height);
-    final arcAngle = 2 * pi * 0.5;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2, arcAngle, false, paint);
-
-    final paint2 = Paint()
-      ..color = Colors.blue.withOpacity(0.7)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 50;
-    final radius2 = min(size.width, size.height);
-    final arcAngle2 = 2 * pi * 0.25;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius2), -pi / 2 + arcAngle, arcAngle2, false, paint2);
-
-    final paint3 = Paint()
-      ..color = Colors.red.withOpacity(0.7)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 50;
-    final radius3 = min(size.width, size.height);
-    final arcAngle3 = 2 * pi * 0.25;
-    canvas.drawArc(
-        Rect.fromCircle(center: center, radius: radius3), -pi / 2 + arcAngle + arcAngle2, arcAngle3, false, paint3);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
-class CircularGraph extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (CustomPaint(
-      size: Size(50, 50),
-      painter: CircularPainter(),
-    ));
-  }
-}
-
-class AppBarMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        )
-      ],
-    ));
-  }
-}
-
-class TitleArea extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: EdgeInsets.only(left: 48),
-        child: Text(
-          'SUMMARY',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
-    ));
-  }
-}
-
-class WeeklyBarGraph extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {}
-}
-
-class HabitContentsDemo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (Column(
-      children: [
-        Container(
-          height: 50,
-          width: 300,
-          child: Text(
-            '筋トレ',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        )
-      ],
-    ));
-  }
-}
-
-class BarGraphs extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (Container(
-      height: 420,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 8),
-              child: GlassContainer(height: 100, width: 300, child: HabitContentsDemo()),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
-}
-
-class AppContents extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return (SafeArea(
-      child: Center(
-        child: Column(
-          children: [
-            AppBarMenu(),
-            TitleArea(),
-            Padding(
-              padding: EdgeInsets.all(100),
-              child: CircularGraph(),
-            ),
-            BarGraphs(),
-          ],
-        ),
-      ),
-    ));
+    );
   }
 }
 
 class HabitResultsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (Stack(
-      children: [
-        LightGradientBackground(),
-        AppContents(),
-      ],
-    ));
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              alignment: Alignment.center,
+              child: Text('なんかよさげタイトルエリア', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  height: 200,
+                  width: 200,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: Colors.cyan, borderRadius: BorderRadius.circular(180)),
+                ),
+                Container(
+                  height: 160,
+                  width: 160,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(180)),
+                ),
+                Container(
+                  height: 150,
+                  width: 150,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: Colors.lightGreen, borderRadius: BorderRadius.circular(180)),
+                ),
+                Container(
+                  height: 110,
+                  width: 110,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(180)),
+                ),
+                Text('🐓', style: TextStyle(fontSize: 50)),
+              ],
+            ),
+            SingleItemBarGraph(accentColor: Colors.cyan, title: '筋トレ', score: 8),
+            SingleItemBarGraph(accentColor: Colors.lightGreen, title: '水飲む', score: 12),
+            SingleItemBarGraph(accentColor: Colors.lightBlue, title: '本を読む', score: 5),
+            SingleItemBarGraph(accentColor: Colors.amber, title: '叫ぶ', score: 14),
+            SingleItemBarGraph(accentColor: Colors.purple, title: '踊る', score: 3),
+          ],
+        ),
+      ),
+    );
   }
 }
