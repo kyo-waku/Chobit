@@ -62,15 +62,21 @@ class ArrowClipper extends CustomClipper<Path> {
   bool shouldReclip(ArrowClipper oldClipper) => false;
 }
 
+/**
+  Meter Graph Component
+*/
 class MeterGraph extends StatelessWidget {
+  final double height;
+  final double width;
+  const MeterGraph({this.height, this.width});
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
         Container(
-          height: 200,
-          width: 200,
+          height: height,
+          width: width,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             // color: Colors.cyan,
@@ -78,7 +84,7 @@ class MeterGraph extends StatelessWidget {
           ),
         ),
         CustomPaint(
-          size: Size(200, 200),
+          size: Size(height, width),
           painter: ArcPainter(
             startAngle: 10,
             sweepAngle: 16,
@@ -86,7 +92,7 @@ class MeterGraph extends StatelessWidget {
           ),
         ),
         CustomPaint(
-          size: Size(200, 200),
+          size: Size(height, width),
           painter: ArcPainter(
             startAngle: 10,
             sweepAngle: 10,
@@ -96,8 +102,8 @@ class MeterGraph extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           child: Container(
-            width: 20,
-            height: 20,
+            width: width * 0.1,
+            height: height * 0.1,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Colors.grey,
@@ -112,16 +118,16 @@ class MeterGraph extends StatelessWidget {
             child: ClipPath(
               clipper: ArrowClipper(),
               child: Container(
-                width: 180,
-                height: 180,
+                width: width * 0.9,
+                height: height * 0.9,
                 color: Colors.grey,
               ),
             ),
           ),
         ),
         Container(
-          height: 180,
-          width: 200,
+          height: height * 0.9,
+          width: width,
           alignment: Alignment.bottomCenter,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,

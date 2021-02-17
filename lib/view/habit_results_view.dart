@@ -19,7 +19,7 @@ class HabitResultsView extends StatelessWidget {
               child: Text('なんかよさげタイトルエリア',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
-            MeterGraph(),
+            MeterGraph(height: 200, width: 200),
             SingleItemBarGraph(
                 accentColor: Colors.cyan,
                 title: '筋トレ',
