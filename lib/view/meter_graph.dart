@@ -68,7 +68,9 @@ class ArrowClipper extends CustomClipper<Path> {
 class MeterGraph extends StatelessWidget {
   final double height;
   final double width;
-  const MeterGraph({this.height, this.width});
+  final MaterialColor baseColor;
+  final MaterialColor signalColor;
+  const MeterGraph({this.height, this.width, this.baseColor, this.signalColor});
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -79,7 +81,6 @@ class MeterGraph extends StatelessWidget {
           width: width,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            // color: Colors.cyan,
             shape: BoxShape.circle,
           ),
         ),
@@ -88,7 +89,7 @@ class MeterGraph extends StatelessWidget {
           painter: ArcPainter(
             startAngle: 10,
             sweepAngle: 16,
-            color: Colors.lime,
+            color: baseColor,
           ),
         ),
         CustomPaint(
@@ -96,7 +97,7 @@ class MeterGraph extends StatelessWidget {
           painter: ArcPainter(
             startAngle: 10,
             sweepAngle: 10,
-            color: Colors.amber,
+            color: signalColor,
           ),
         ),
         Container(
