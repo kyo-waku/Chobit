@@ -66,13 +66,20 @@ class ArrowClipper extends CustomClipper<Path> {
   Meter Graph Component
 */
 class MeterGraph extends StatelessWidget {
+  final double start = 10;
+  final double sweep = 16;
+
   final double height;
   final double width;
   final MaterialColor baseColor;
   final MaterialColor signalColor;
-  const MeterGraph({this.height, this.width, this.baseColor, this.signalColor});
+  final int target;
+  final int current;
+  const MeterGraph({this.height, this.width, this.baseColor, this.signalColor, this.target, this.current});
   @override
   Widget build(BuildContext context) {
+    double rate = current / target * 100;
+    double signalSweep = (rate / (sweep - start)).floorToDouble();
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -87,16 +94,16 @@ class MeterGraph extends StatelessWidget {
         CustomPaint(
           size: Size(height, width),
           painter: ArcPainter(
-            startAngle: 10,
-            sweepAngle: 16,
+            startAngle: start,
+            sweepAngle: sweep,
             color: baseColor,
           ),
         ),
         CustomPaint(
           size: Size(height, width),
           painter: ArcPainter(
-            startAngle: 10,
-            sweepAngle: 10,
+            startAngle: start,
+            sweepAngle: signalSweep,
             color: signalColor,
           ),
         ),
@@ -115,7 +122,7 @@ class MeterGraph extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           child: Transform.rotate(
-            angle: math.pi / 12 * 14,
+              angle: math.pi / 12 * (4 + signalSweep),
             child: ClipPath(
               clipper: ArrowClipper(),
               child: Container(
@@ -135,7 +142,7 @@ class MeterGraph extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '60%',
+                rate.floor().toString() + '%',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
               ),
               Row(
@@ -143,7 +150,7 @@ class MeterGraph extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '18/30',
+                    current.toString() + '/' + target.toString(),
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(width: 4),

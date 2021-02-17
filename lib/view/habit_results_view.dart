@@ -22,8 +22,10 @@ class HabitResultsView extends StatelessWidget {
             MeterGraph(
               height: 200,
               width: 200,
-              baseColor: Colors.lime,
-              signalColor: Colors.amber,
+              baseColor: Colors.lightBlue,
+              signalColor: Colors.lime,
+              target: 50,
+              current: 20,
             ),
             SingleItemBarGraph(
                 accentColor: Colors.cyan,
